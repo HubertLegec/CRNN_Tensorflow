@@ -2,12 +2,55 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d7162d6-97d8-473f-b2c9-42b0ff26d2fe" name="Default" comment="code formatting changes">
-      <change afterPath="$PROJECT_DIR$/tools/demo_freeze.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wild_reco.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/CRNN_Tensorflow.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local_utils/data_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/local_utils/data_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/preferred-vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/crnn_model/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/crnn_model/cnn_basenet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/crnn_model/crnn_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/char_dict/char_dict.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/char_dict/ord_map.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/seq_distance.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/test_example_image1_output.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/test_example_image2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/test_example_image2_output.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/test_output.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/text_example_image1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/train_log.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/images/train_loss.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test_feature.tfrecords" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test_images/test_01.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test_images/test_02.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test_images/test_03.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_provider/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_provider/base_data_provider.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_provider/data_provider.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/global_configuration/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/global_configuration/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/local_utils/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/local_utils/data_utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/local_utils/establish_char_dict.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/local_utils/log_utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/shadownet.log.2017-09-30" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/shadownet.log.2017-10-17" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/shadownet.log.2017-10-19" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/shadownet.log.log.wf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/shadownet/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/shadownet/shadownet_2017-10-17-11-47-46.ckpt-199999.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/shadownet/shadownet_2017-10-17-11-47-46.ckpt-199999.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/shadownet/shadownet_2017-10-17-11-47-46.ckpt-199999.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/demo_shadownet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/test_shadownet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/train_shadownet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/write_text_features.py" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,20 +115,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="demo_freeze.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/demo_freeze.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="272">
+              <caret line="91" column="11" lean-forward="true" selection-start-line="91" selection-start-column="11" selection-end-line="91" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -518,7 +549,14 @@
       <option name="project" value="LOCAL" />
       <updated>1531600898770</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="remove idea files from git">
+      <created>1531601260355</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1531601260355</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -609,14 +647,15 @@
     <MESSAGE value="gitignore update" />
     <MESSAGE value="Dockerfile and requirements update" />
     <MESSAGE value="code formatting changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="code formatting changes" />
+    <MESSAGE value="remove idea files from git" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove idea files from git" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/local_utils/data_utils.py</url>
-          <line>69</line>
+          <line>70</line>
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -653,16 +692,6 @@
           <url>file://$PROJECT_DIR$/tools/test_shadownet.py</url>
           <line>47</line>
           <option name="timeStamp" value="137" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tools/demo_freeze.py</url>
-          <line>38</line>
-          <option name="timeStamp" value="153" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tools/demo_freeze.py</url>
-          <line>17</line>
-          <option name="timeStamp" value="154" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -872,9 +901,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wild_reco.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/tmp_demo_shadownet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="702">
@@ -973,10 +999,13 @@
     <entry file="file://$PROJECT_DIR$/logs/shadownet.log">
       <provider selected="true" editor-type-id="LogFileEditorProvider" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/wild_reco.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+        <state relative-caret-position="272">
+          <caret line="91" column="11" lean-forward="true" selection-start-line="91" selection-start-column="11" selection-end-line="91" selection-end-column="11" />
         </state>
       </provider>
     </entry>
