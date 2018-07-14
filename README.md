@@ -22,26 +22,11 @@ If you want to test a single image you can do it by
 ```
 python tools/demo_shadownet.py --image_path data/test_images/test_01.jpg --weights_path model/shadownet/shadownet_2017-09-29-19-16-33.ckpt-39999
 ```
-`Example image_01 is`  
-![Example image1](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/text_example_image1.png)  
-`Expected output_01 is`  
-![Example image1 output](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/test_example_image1_output.png)  
-`Example image_02 is`  
-![Example image2](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/test_example_image2.png)  
-`Expected output_02 is`  
-![Example image2 output](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/test_example_image2_output.png) 
-`Example image_03 is`  
-![Example image3](https://github.com/TJCVRS/CRNN_Tensorflow/blob/chinese_version_debug/data/images/demo_chinese.png)  
-`Expected output_03 is`  
-![Example image3 output](https://github.com/TJCVRS/CRNN_Tensorflow/blob/chinese_version_debug/data/images/demo_chinese_output.png)
-`Example image_04 is`  
-![Example image4](https://github.com/TJCVRS/CRNN_Tensorflow/blob/chinese_version_debug/data/images/dmeo_chinese_2.png)  
-`Expected output_04 is`  
-![Example image4 output](https://github.com/TJCVRS/CRNN_Tensorflow/blob/chinese_version_debug/data/images/demo_chinese_2_ouput.png)
 
 ## Train your own model
 #### Data Preparation
-Firstly you need to store all your image data in a root folder then you need to supply a txt file named sample.txt to specify the relative path to the image data dir and it's corresponding text label. For example
+Firstly you need to store all your image data in a root folder then you need to supply a txt file named sample.txt to specify the relative path to the image data dir and it's corresponding text label.
+For example
 
 ```
 path/1/2/373_coley_14845.jpg coley
@@ -55,7 +40,8 @@ python tools/write_text_features --dataset_dir path/to/your/dataset --save_dir p
 All your training image will be scaled into (32, 100, 3) the dataset will be divided into train, test, validation set and you can change the parameter to control the ratio of them.
 
 #### Train model
-The whole training epoches are 40000 in my experiment. I trained the model with a batch size 32, initialized learning rate is 0.1 and decrease by multiply 0.1 every 10000 epochs. For more training parameters information you can check the global_configuration/config.py for details. To train your own model by
+The whole training epoches are 40000 in my experiment. I trained the model with a batch size 32, initialized learning rate is 0.1 and decrease by multiply 0.1 every 10000 epochs.
+For more training parameters information you can check the global_configuration/config.py for details. To train your own model by
 
 ```
 python tools/train_shadownet.py --dataset_dir path/to/your/tfrecords
@@ -66,7 +52,8 @@ python tools/train_shadownet.py --dataset_dir path/to/your/tfrecords --weights_p
 ```
 After several times of iteration you can check the log file in logs folder you are supposed to see the following contenent
 ![Training log](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/train_log.png)
-The seq distance is computed by calculating the distance between two saparse tensor so the lower the accuracy value is the better the model performs.The train accuracy is computed by calculating the character-wise precision between the prediction and the ground truth so the higher the better the model performs.
+The seq distance is computed by calculating the distance between two saparse tensor so the lower the accuracy value is the better the model performs.
+The train accuracy is computed by calculating the character-wise precision between the prediction and the ground truth so the higher the better the model performs.
 
 During my experiment the `loss` drops as follows  
 ![Training loss](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/train_loss.png)
@@ -78,4 +65,5 @@ The accuracy during training process rises as follows
 ![Training accuracy](https://github.com/TJCVRS/CRNN_Tensorflow/blob/master/data/images/training_accuracy.md)
 
 ## TODO
-The model is trained on a subet of [Synth 90k](http://www.robots.ox.ac.uk/~vgg/data/text/). So i will train a new model on the whold dataset to get a more robust model.The crnn model needs large of training data to get a rubust model.
+The model is trained on a subet of [Synth 90k](http://www.robots.ox.ac.uk/~vgg/data/text/). So i will train a new model on the whold dataset to get a more robust model.
+The crnn model needs large of training data to get a rubust model.
