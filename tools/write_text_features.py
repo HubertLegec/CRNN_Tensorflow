@@ -3,7 +3,7 @@ import os.path as ops
 import argparse
 import numpy as np
 
-from data_provider import data_provider
+from data_provider import TextDataProvider
 from local_utils import data_utils
 
 
@@ -30,12 +30,12 @@ def write_features(dataset_dir, save_dir):
         os.makedirs(save_dir)
 
     print('Initialize the dataset provider ......')
-    provider = data_provider.TextDataProvider(dataset_dir=dataset_dir,
-                                              annotation_name='sample.txt',
-                                              validation_set=True,
-                                              validation_split=0.15,
-                                              shuffle='every_epoch',
-                                              normalization=None)
+    provider = TextDataProvider(dataset_dir=dataset_dir,
+                                annotation_name='sample.txt',
+                                validation_set=True,
+                                validation_split=0.15,
+                                shuffle='every_epoch',
+                                normalization=None)
     print('Dataset provider intialize complete')
 
     feature_io = data_utils.TextFeatureIO()
@@ -75,7 +75,6 @@ def write_features(dataset_dir, save_dir):
     val_tfrecord_path = ops.join(save_dir, 'validation_feature.tfrecords')
     feature_io.writer.write_features(tfrecords_path=val_tfrecord_path, labels=val_labels, images=val_images,
                                      imagenames=val_imagenames)
-
     return
 
 

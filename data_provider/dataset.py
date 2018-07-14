@@ -11,7 +11,6 @@ class Dataset(object):
     @staticmethod
     def shuffle_images_labels(images, labels, imagenames):
         """
-
         :param images:
         :param labels:
         :param imagenames:
@@ -50,11 +49,6 @@ class Dataset(object):
         return images
 
     def normalize_all_images_by_chanels(self, initial_images):
-        """
-
-        :param initial_images:
-        :return:
-        """
         new_images = np.zeros(initial_images.shape)
         for i in range(initial_images.shape[0]):
             new_images[i] = self.normalize_image_by_chanel(initial_images[i])
@@ -62,11 +56,6 @@ class Dataset(object):
 
     @staticmethod
     def normalize_image_by_chanel(image):
-        """
-
-        :param image:
-        :return:
-        """
         new_image = np.zeros(image.shape)
         for chanel in range(3):
             mean = np.mean(image[:, :, chanel])
@@ -75,16 +64,7 @@ class Dataset(object):
         return new_image
 
     def num_examples(self):
-        """
-
-        :return:
-        """
         raise NotImplementedError
 
     def next_batch(self, batch_size):
-        """
-
-        :param batch_size:
-        :return:
-        """
         raise NotImplementedError
