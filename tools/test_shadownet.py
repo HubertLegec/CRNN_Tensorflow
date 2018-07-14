@@ -11,10 +11,6 @@ from global_configuration import config
 
 
 def init_args():
-    """
-
-    :return:
-    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_dir', type=str, help='Where you store the test tfrecords data')
     parser.add_argument('--weights_path', type=str, help='Where you store the shadow net weights')
@@ -24,14 +20,6 @@ def init_args():
 
 
 def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=True):
-    """
-
-    :param dataset_dir:
-    :param weights_path:
-    :param is_vis:
-    :param is_recursive:
-    :return:
-    """
     # Initialize the record decoder
     decoder = data_utils.TextFeatureIO().reader
     images_t, labels_t, imagenames_t = decoder.read_features(ops.join(dataset_dir, 'test_feature.tfrecords'), num_epochs=None)

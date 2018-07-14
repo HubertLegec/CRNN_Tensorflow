@@ -80,36 +80,14 @@ class CNNBaseModel(metaclass=ABCMeta):
 
     @staticmethod
     def relu(inputdata, name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :return:
-        """
         return tf.nn.relu(features=inputdata, name=name)
 
     @staticmethod
     def sigmoid(inputdata, name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :return:
-        """
         return tf.nn.sigmoid(x=inputdata, name=name)
 
     @staticmethod
     def maxpooling(inputdata, kernel_size, stride=None, padding='VALID', data_format='NHWC', name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :param kernel_size:
-        :param stride:
-        :param padding:
-        :param data_format:
-        :return:
-        """
         padding = padding.upper()
 
         if stride is None:
@@ -131,16 +109,6 @@ class CNNBaseModel(metaclass=ABCMeta):
 
     @staticmethod
     def avgpooling(inputdata, kernel_size, stride=None, padding='VALID', data_format='NHWC', name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :param kernel_size:
-        :param stride:
-        :param padding:
-        :param data_format:
-        :return:
-        """
         if stride is None:
             stride = kernel_size
 
@@ -153,13 +121,6 @@ class CNNBaseModel(metaclass=ABCMeta):
 
     @staticmethod
     def globalavgpooling(inputdata, data_format='NHWC', name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :param data_format:
-        :return:
-        """
         assert inputdata.shape.ndims == 4
         assert data_format in ['NHWC', 'NCHW']
 
@@ -208,15 +169,6 @@ class CNNBaseModel(metaclass=ABCMeta):
 
     @staticmethod
     def instancenorm(inputdata, epsilon=1e-5, data_format='NHWC', use_affine=True, name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :param epsilon:
-        :param data_format:
-        :param use_affine:
-        :return:
-        """
         shape = inputdata.get_shape().as_list()
         if len(shape) != 4:
             raise ValueError("Input data of instancebn layer has to be 4D tensor")
@@ -245,14 +197,6 @@ class CNNBaseModel(metaclass=ABCMeta):
 
     @staticmethod
     def dropout(inputdata, keep_prob, noise_shape=None, name=None):
-        """
-
-        :param name:
-        :param inputdata:
-        :param keep_prob:
-        :param noise_shape:
-        :return:
-        """
         return tf.nn.dropout(inputdata, keep_prob=keep_prob, noise_shape=noise_shape, name=name)
 
     @staticmethod
@@ -287,22 +231,9 @@ class CNNBaseModel(metaclass=ABCMeta):
 
     @staticmethod
     def layerbn(inputdata, is_training):
-        """
-
-        :param inputdata:
-        :param is_training:
-        :return:
-        """
         output = tf.contrib.layers.batch_norm(inputdata, scale=True, is_training=is_training, updates_collections=None)
         return output
 
     @staticmethod
     def squeeze(inputdata, axis=None, name=None):
-        """
-
-        :param inputdata:
-        :param axis:
-        :param name:
-        :return:
-        """
         return tf.squeeze(input=inputdata, axis=axis, name=name)

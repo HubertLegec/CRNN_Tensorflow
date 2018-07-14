@@ -88,11 +88,6 @@ class CharDictBuilder(object):
 
     @staticmethod
     def read_ord_map_dict(ord_map_dict_path):
-        """
-
-        :param ord_map_dict_path:
-        :return:
-        """
         assert ops.exists(ord_map_dict_path)
 
         with open(ord_map_dict_path, 'r', encoding='utf-8') as json_f:

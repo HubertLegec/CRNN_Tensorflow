@@ -14,10 +14,6 @@ logger = log_utils.init_logger()
 
 
 def init_args():
-    """
-
-    :return:
-    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_dir', type=str, help='Where you store the dataset')
     parser.add_argument('--weights_path', type=str, help='Where you store the pretrained weights')
@@ -26,12 +22,6 @@ def init_args():
 
 
 def train_shadownet(dataset_dir, weights_path=None):
-    """
-
-    :param dataset_dir:
-    :param weights_path:
-    :return:
-    """
     # decode the tf records to get the training data
     decoder = data_utils.TextFeatureIO().reader
     images, labels, imagenames = decoder.read_features(ops.join(dataset_dir, 'train_feature.tfrecords'),

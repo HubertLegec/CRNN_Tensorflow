@@ -13,10 +13,6 @@ class ShadowNet(cnn_basenet.CNNBaseModel):
         Implement the crnn model for squence recognition
     """
     def __init__(self, phase, hidden_nums, layers_nums, seq_length, num_classes):
-        """
-
-        :param phase:
-        """
         super(ShadowNet, self).__init__()
         self.__phase = phase
         self.__hidden_nums = hidden_nums
@@ -27,19 +23,10 @@ class ShadowNet(cnn_basenet.CNNBaseModel):
 
     @property
     def phase(self):
-        """
-
-        :return:
-        """
         return self.__phase
 
     @phase.setter
     def phase(self, value):
-        """
-
-        :param value:
-        :return:
-        """
         if not isinstance(value, str):
             raise TypeError('value should be a str \'Test\' or \'Train\'')
         if value.lower() not in ['test', 'train']:
@@ -136,11 +123,6 @@ class ShadowNet(cnn_basenet.CNNBaseModel):
         return rnn_out, raw_pred
 
     def build_shadownet(self, inputdata):
-        """
-
-        :param inputdata:
-        :return:
-        """
         # first apply the cnn feature extraction stage
         cnn_out = self.__feature_sequence_extraction(inputdata=inputdata)
 

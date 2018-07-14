@@ -8,10 +8,6 @@ from local_utils import data_utils
 
 
 def init_args():
-    """
-
-    :return:
-    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_dir', type=str, help='Where you store the dataset')
     parser.add_argument('--save_dir', type=str, help='Where you store tfrecords')
@@ -20,12 +16,6 @@ def init_args():
 
 
 def write_features(dataset_dir, save_dir):
-    """
-
-    :param dataset_dir:
-    :param save_dir:
-    :return:
-    """
     if not ops.exists(save_dir):
         os.makedirs(save_dir)
 

@@ -19,10 +19,6 @@ class FeatureIO(object):
 
     @property
     def char_list(self):
-        """
-
-        :return:
-        """
         return self.__char_list
 
     @staticmethod
@@ -74,11 +70,6 @@ class FeatureIO(object):
         return tf.train.Feature(bytes_list=tf.train.BytesList(value=value))
 
     def char_to_int(self, char):
-        """
-
-        :param char:
-        :return:
-        """
         temp = ord(char)
         # convert upper character into lower character
         if 65 <= temp <= 90:
@@ -93,13 +84,7 @@ class FeatureIO(object):
         # TODO
         # Here implement a double way dict or two dict to quickly map ord and it's corresponding index
 
-
     def int_to_char(self, number):
-        """
-
-        :param number:
-        :return:
-        """
         if number == '1':
             return '*'
         if number == 1:
@@ -121,11 +106,7 @@ class FeatureIO(object):
             lengths.append(len(label))
         return encoded_labeles, lengths
 
-    def sparse_tensor_to_str(self, spares_tensor: tf.SparseTensor):
-        """
-        :param spares_tensor:
-        :return: a str
-        """
+    def sparse_tensor_to_str(self, spares_tensor):
         indices = spares_tensor.indices
         values = spares_tensor.values
         values = np.array([self.__ord_map[str(tmp)] for tmp in values])
@@ -152,14 +133,6 @@ class TextFeatureWriter(FeatureIO):
         return
 
     def write_features(self, tfrecords_path, labels, images, imagenames):
-        """
-
-        :param tfrecords_path:
-        :param labels:
-        :param images:
-        :param imagenames:
-        :return:
-        """
         assert len(labels) == len(images) == len(imagenames)
 
         labels, length = self.encode_labels(labels)
@@ -193,12 +166,6 @@ class TextFeatureReader(FeatureIO):
 
     @staticmethod
     def read_features(tfrecords_path, num_epochs):
-        """
-
-        :param tfrecords_path:
-        :param num_epochs:
-        :return:
-        """
         assert ops.exists(tfrecords_path)
 
         filename_queue = tf.train.string_input_producer([tfrecords_path], num_epochs=num_epochs)
@@ -224,25 +191,14 @@ class TextFeatureIO(object):
         Implement a crnn feture io manager
     """
     def __init__(self):
-        """
-
-        """
         self.__writer = TextFeatureWriter()
         self.__reader = TextFeatureReader()
         return
 
     @property
     def writer(self):
-        """
-
-        :return:
-        """
         return self.__writer
 
     @property
     def reader(self):
-        """
-
-        :return:
-        """
         return self.__reader
