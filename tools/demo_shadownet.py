@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-29 下午3:56
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : demo_shadownet.py
-# @IDE: PyCharm Community Edition
-"""
-Use shadow net to recognize the scene text
-"""
 import tensorflow as tf
 import os.path as ops
 import numpy as np
@@ -19,18 +9,15 @@ try:
 except ImportError:
     pass
 
-from crnn_model import crnn_model
+from crnn_model import ShadowNet
 from global_configuration import config
-from local_utils import log_utils, data_utils
+from local_utils import init_logger, data_utils
+from tensorflow.python.framework import graph_util, graph_io
 
-logger = log_utils.init_logger()
+logger = init_logger()
 
 
 def init_args():
-    """
-
-    :return:
-    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--image_path', type=str, help='Where you store the image',
                         default='data/test_images/test_01.jpg')
@@ -41,13 +28,6 @@ def init_args():
 
 
 def recognize(image_path, weights_path, is_vis=True):
-    """
-
-    :param image_path:
-    :param weights_path:
-    :param is_vis:
-    :return:
-    """
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
     image = cv2.resize(image, (100, 32))
     image = np.expand_dims(image, axis=0).astype(np.float32)

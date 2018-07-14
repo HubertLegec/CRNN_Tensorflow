@@ -6,11 +6,11 @@ import numpy as np
 import argparse
 
 from crnn_model import crnn_model
-from local_utils import data_utils, log_utils
+from local_utils import data_utils, init_logger
 from global_configuration import config
 
 
-logger = log_utils.init_logger()
+logger = init_logger()
 
 
 def init_args():

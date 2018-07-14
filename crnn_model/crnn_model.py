@@ -1,14 +1,9 @@
 import tensorflow as tf
 from tensorflow.contrib import rnn
-from crnn_model import cnn_basenet
-
-"""
-Implement the crnn model mentioned in An End-to-End Trainable Neural Network for Image-based Sequence
-Recognition and Its Application to Scene Text Recognition paper
-"""
+from crnn_model import CNNBaseModel
 
 
-class ShadowNet(cnn_basenet.CNNBaseModel):
+class ShadowNet(CNNBaseModel):
     """
         Implement the crnn model for squence recognition
     """
