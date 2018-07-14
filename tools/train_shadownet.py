@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-22 下午1:39
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : train_shadownet.py
-# @IDE: PyCharm Community Edition
-"""
-Train shadow net script
-"""
 import os
 import tensorflow as tf
 import os.path as ops

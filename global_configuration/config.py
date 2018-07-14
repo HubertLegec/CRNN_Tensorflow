@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-22 下午3:25
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : config.py
-# @IDE: PyCharm Community Edition
-"""
-Set some global configuration
-"""
 from easydict import EasyDict as edict
 
 __C = edict()

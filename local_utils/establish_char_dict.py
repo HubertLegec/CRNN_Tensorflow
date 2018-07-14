@@ -1,16 +1,10 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-30 下午4:01
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : establish_char_dict.py
-# @IDE: PyCharm Community Edition
-"""
-Establish the char dictionary in order to contain chinese character
-"""
 import json
 import os.path as ops
 import os
+
+"""
+Establish the char dictionary in order to contain chinese character
+"""
 
 
 class CharDictBuilder(object):

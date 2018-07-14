@@ -1,16 +1,10 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-18 下午3:59
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : cnn_basenet.py
-# @IDE: PyCharm Community Edition
-"""
-The base convolution neural networks mainly implement some useful cnn functions
-"""
 import tensorflow as tf
 import numpy as np
 from abc import ABCMeta
+
+"""
+The base convolution neural networks mainly implement some useful cnn functions
+"""
 
 
 class CNNBaseModel(metaclass=ABCMeta):

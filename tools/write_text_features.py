@@ -1,22 +1,7 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-22 下午7:47
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : write_text_features.py
-# @IDE: PyCharm Community Edition
-"""
-Write text features into tensorflow records
-"""
 import os
 import os.path as ops
 import argparse
 import numpy as np
-import cv2
-try:
-    from cv2 import cv2
-except ImportError:
-    pass
 
 from data_provider import data_provider
 from local_utils import data_utils

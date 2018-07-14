@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-25 下午3:56
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : test_shadownet.py
-# @IDE: PyCharm Community Edition
-"""
-Test shadow net script
-"""
 import os.path as ops
 import tensorflow as tf
 import matplotlib.pyplot as plt

@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-18 下午4:11
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : log_utils.py
-# @IDE: PyCharm Community Edition
-"""
-Set the log config
-"""
 import logging
 from logging import handlers
 import os

@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-22 下午6:46
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : data_utils.py
-# @IDE: PyCharm Community Edition
-"""
-Implement some utils used to convert image and it's corresponding label into tfrecords
-"""
 import numpy as np
 import tensorflow as tf
 import os

@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 17-9-22 下午1:39
-# @Author  : Luo Yao
-# @Site    : http://github.com/TJCVRS
-# @File    : data_provider.py
-# @IDE: PyCharm Community Edition
-"""
-Provide the training and testing data for shadow net
-"""
 import os.path as ops
 import numpy as np
 import copy
