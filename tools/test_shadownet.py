@@ -44,15 +44,18 @@ def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=True):
     """
     # Initialize the record decoder
     decoder = data_utils.TextFeatureIO().reader
-    images_t, labels_t, imagenames_t = decoder.read_features(
-        ops.join(dataset_dir, 'test_feature.tfrecords'), num_epochs=None)
+    images_t, labels_t, imagenames_t = decoder.read_features(ops.join(dataset_dir, 'test_feature.tfrecords'), num_epochs=None)
     if not is_recursive:
         images_sh, labels_sh, imagenames_sh = tf.train.shuffle_batch(tensors=[images_t, labels_t, imagenames_t],
-                                                                     batch_size=32, capacity=1000+32*2,
-                                                                     min_after_dequeue=2, num_threads=4)
+                                                                     batch_size=32,
+                                                                     capacity=1000+32*2,
+                                                                     min_after_dequeue=2,
+                                                                     num_threads=4)
     else:
         images_sh, labels_sh, imagenames_sh = tf.train.batch(tensors=[images_t, labels_t, imagenames_t],
-                                                             batch_size=32, capacity=1000 + 32 * 2, num_threads=4)
+                                                             batch_size=32,
+                                                             capacity=1000 + 32 * 2,
+                                                             num_threads=4)
 
     images_sh = tf.cast(x=images_sh, dtype=tf.float32)
 

@@ -9,9 +9,7 @@
 Implement the crnn model mentioned in An End-to-End Trainable Neural Network for Image-based Sequence
 Recognition and Its Application to Scene Text Recognition paper
 """
-import numpy as np
 import tensorflow as tf
-from tensorflow.contrib import layers as tflayers
 from tensorflow.contrib import rnn
 
 from crnn_model import cnn_basenet
@@ -116,14 +114,13 @@ class ShadowNet(cnn_basenet.CNNBaseModel):
         :return:
         """
         with tf.variable_scope('LSTMLayers'):
-            # construct stack lstm rcnn layer
-            # forward lstm cell
+            # construct stack LSTM rcnn layer
+            # forward LSTM cell
             fw_cell_list = [rnn.BasicLSTMCell(nh, forget_bias=1.0) for nh in [self.__hidden_nums, self.__hidden_nums]]
             # Backward direction cells
             bw_cell_list = [rnn.BasicLSTMCell(nh, forget_bias=1.0) for nh in [self.__hidden_nums, self.__hidden_nums]]
 
-            stack_lstm_layer, _, _ = rnn.stack_bidirectional_dynamic_rnn(fw_cell_list, bw_cell_list, inputdata,
-                                                                         dtype=tf.float32)
+            stack_lstm_layer, _, _ = rnn.stack_bidirectional_dynamic_rnn(fw_cell_list, bw_cell_list, inputdata, dtype=tf.float32)
 
             if self.phase.lower() == 'train':
                 stack_lstm_layer = self.dropout(inputdata=stack_lstm_layer, keep_prob=0.5)
