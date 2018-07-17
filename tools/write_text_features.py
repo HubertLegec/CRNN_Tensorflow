@@ -1,10 +1,8 @@
 import os
 import os.path as ops
 import argparse
-import numpy as np
 
-from data_provider import TextDataProvider
-from local_utils import data_utils
+from data_provider import TfRecordBuilder
 
 
 def init_args():
@@ -19,52 +17,23 @@ def write_features(dataset_dir, save_dir):
     if not ops.exists(save_dir):
         os.makedirs(save_dir)
 
-    print('Initialize the dataset provider ......')
-    provider = TextDataProvider(dataset_dir=dataset_dir,
-                                annotation_name='sample.txt',
-                                validation_set=True,
-                                validation_split=0.15,
-                                shuffle='every_epoch',
-                                normalization=None)
-    print('Dataset provider intialize complete')
-
-    feature_io = data_utils.TextFeatureIO()
-
-    # write train tfrecords
-    print('Start writing training tf records')
-
-    train_images = provider.train.images
-    train_images = [bytes(list(np.reshape(tmp, [100 * 32 * 3]))) for tmp in train_images]
-    train_labels = provider.train.labels
-    train_imagenames = provider.train.imagenames
-
-    train_tfrecord_path = ops.join(save_dir, 'train_feature.tfrecords')
-    feature_io.writer.write_features(tfrecords_path=train_tfrecord_path, labels=train_labels, images=train_images,
-                                     imagenames=train_imagenames)
-
-    # write test tfrecords
-    print('Start writing testing tf records')
-
-    test_images = provider.test.images
-    test_images = [bytes(list(np.reshape(tmp, [100 * 32 * 3]))) for tmp in test_images]
-    test_labels = provider.test.labels
-    test_imagenames = provider.test.imagenames
-
-    test_tfrecord_path = ops.join(save_dir, 'test_feature.tfrecords')
-    feature_io.writer.write_features(tfrecords_path=test_tfrecord_path, labels=test_labels, images=test_images,
-                                     imagenames=test_imagenames)
-
     # write val tfrecords
     print('Start writing validation tf records')
 
-    val_images = provider.validation.images
-    val_images = [bytes(list(np.reshape(tmp, [100 * 32 * 3]))) for tmp in val_images]
-    val_labels = provider.validation.labels
-    val_imagenames = provider.validation.imagenames
+    val_builder = TfRecordBuilder(ops.join(dataset_dir, 'annotation_val.txt'), ops.join(save_dir, 'validation_feature.tfrecords'))
+    val_builder.process()
 
-    val_tfrecord_path = ops.join(save_dir, 'validation_feature.tfrecords')
-    feature_io.writer.write_features(tfrecords_path=val_tfrecord_path, labels=val_labels, images=val_images,
-                                     imagenames=val_imagenames)
+    # write test tfrecord
+    print('Start writing testing tf records')
+
+    test_builder = TfRecordBuilder(ops.join(dataset_dir, 'annotation_test.txt', ops.join(save_dir, 'test_feature.tfrecords')))
+    test_builder.process()
+
+    # write train tfrecords
+    print('Start writing training tf records')
+    train_builder = TfRecordBuilder(ops.join(dataset_dir, 'annotation_train.txt'), ops.join(save_dir, 'train_feature.tfrecords'))
+    train_builder.process()
+
     return
 
 
