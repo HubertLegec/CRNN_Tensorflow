@@ -2,12 +2,10 @@ import numpy as np
 import tensorflow as tf
 import os
 import os.path as ops
-import sys
-
 from local_utils import establish_char_dict
 
 
-class FeatureIO(object):
+class FeatureIO:
     """
         Implement the base writer class
     """
@@ -15,7 +13,6 @@ class FeatureIO(object):
                  ord_map_dict_path=ops.join(os.getcwd(), 'data/char_dict/ord_map.json')):
         self.__char_list = establish_char_dict.CharDictBuilder.read_char_dict(char_dict_path)
         self.__ord_map = establish_char_dict.CharDictBuilder.read_ord_map_dict(ord_map_dict_path)
-        return
 
     @property
     def char_list(self):
@@ -122,83 +119,3 @@ class FeatureIO(object):
         for str_list in str_lists:
             res.append(''.join(c for c in str_list if c != '*'))
         return res
-
-
-class TextFeatureWriter(FeatureIO):
-    """
-        Implement the crnn feature writer
-    """
-    def __init__(self):
-        super(TextFeatureWriter, self).__init__()
-        return
-
-    def write_features(self, tfrecords_path, labels, images, imagenames):
-        assert len(labels) == len(images) == len(imagenames)
-
-        labels, length = self.encode_labels(labels)
-
-        if not ops.exists(ops.split(tfrecords_path)[0]):
-            os.makedirs(ops.split(tfrecords_path)[0])
-
-        with tf.python_io.TFRecordWriter(tfrecords_path) as writer:
-            for index, image in enumerate(images):
-                features = tf.train.Features(feature={
-                    'labels': self.int64_feature(labels[index]),
-                    'images': self.bytes_feature(image),
-                    'imagenames': self.bytes_feature(imagenames[index])
-                })
-                example = tf.train.Example(features=features)
-                writer.write(example.SerializeToString())
-                sys.stdout.write('\r>>Writing {:d}/{:d} {:s} tfrecords'.format(index+1, len(images), imagenames[index]))
-                sys.stdout.flush()
-            sys.stdout.write('\n')
-            sys.stdout.flush()
-        return
-
-
-class TextFeatureReader(FeatureIO):
-    """
-        Implement the crnn feature reader
-    """
-    def __init__(self):
-        super(TextFeatureReader, self).__init__()
-        return
-
-    @staticmethod
-    def read_features(tfrecords_path, num_epochs):
-        assert ops.exists(tfrecords_path)
-
-        filename_queue = tf.train.string_input_producer([tfrecords_path], num_epochs=num_epochs)
-        reader = tf.TFRecordReader()
-        _, serialized_example = reader.read(filename_queue)
-
-        features = tf.parse_single_example(serialized_example,
-                                           features={
-                                               'images': tf.FixedLenFeature((), tf.string),
-                                               'imagenames': tf.FixedLenFeature([1], tf.string),
-                                               'labels': tf.VarLenFeature(tf.int64),
-                                           })
-        image = tf.decode_raw(features['images'], tf.uint8)
-        images = tf.reshape(image, [32, 100, 3])
-        labels = features['labels']
-        labels = tf.cast(labels, tf.int32)
-        imagenames = features['imagenames']
-        return images, labels, imagenames
-
-
-class TextFeatureIO(object):
-    """
-        Implement a crnn feture io manager
-    """
-    def __init__(self):
-        self.__writer = TextFeatureWriter()
-        self.__reader = TextFeatureReader()
-        return
-
-    @property
-    def writer(self):
-        return self.__writer
-
-    @property
-    def reader(self):
-        return self.__reader

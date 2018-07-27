@@ -4,7 +4,7 @@ from os.path import isfile, join
 import tensorflow as tf
 import numpy as np
 import cv2
-from local_utils import data_utils
+from local_utils import TextFeatureIO
 from crnn_model import crnn_model
 
 
@@ -30,7 +30,7 @@ def load_images(image_path, files_limit):
 
 
 def recognize(image_path, weights_path, files_limit=3):
-    decoder = data_utils.TextFeatureIO().reader
+    decoder = TextFeatureIO().reader
     images, filenames = load_images(image_path, files_limit)
     images = np.squeeze(images)
     tf.reset_default_graph()

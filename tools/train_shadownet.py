@@ -6,7 +6,7 @@ import numpy as np
 import argparse
 
 from crnn_model import crnn_model
-from local_utils import data_utils, init_logger
+from local_utils import TextFeatureIO, init_logger
 from global_configuration import config
 
 
@@ -23,7 +23,7 @@ def init_args():
 
 def train_shadownet(dataset_dir, weights_path=None):
     # decode the tf records to get the training data
-    decoder = data_utils.TextFeatureIO().reader
+    decoder = TextFeatureIO().reader
     images, labels, imagenames = decoder.read_features(ops.join(dataset_dir, 'train_feature.tfrecords'), num_epochs=None)
     inputdata, input_labels, input_imagenames = tf.train.shuffle_batch(
         tensors=[images, labels, imagenames], batch_size=32, capacity=1000+2*32, min_after_dequeue=100, num_threads=1)

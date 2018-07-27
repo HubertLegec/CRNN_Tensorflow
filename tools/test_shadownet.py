@@ -5,7 +5,7 @@ import argparse
 import numpy as np
 import math
 
-from local_utils import data_utils
+from local_utils import TextFeatureIO
 from crnn_model import crnn_model
 from global_configuration import config
 
@@ -19,9 +19,9 @@ def init_args():
     return parser.parse_args()
 
 
-def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=True):
+def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=False):
     # Initialize the record decoder
-    decoder = data_utils.TextFeatureIO().reader
+    decoder = TextFeatureIO().reader
     images_t, labels_t, imagenames_t = decoder.read_features(ops.join(dataset_dir, 'test_feature.tfrecords'), num_epochs=None)
     if not is_recursive:
         images_sh, labels_sh, imagenames_sh = tf.train.shuffle_batch(tensors=[images_t, labels_t, imagenames_t],
