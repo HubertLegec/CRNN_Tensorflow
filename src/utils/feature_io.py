@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 import os
 import os.path as ops
-from local_utils import establish_char_dict
+from utils import establish_char_dict
 
 
 class FeatureIO:

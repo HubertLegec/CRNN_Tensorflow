@@ -1,9 +1,9 @@
 import argparse
-from os.path import basename, dirname
 import tensorflow as tf
 import numpy as np
+from os.path import basename, dirname
 from tensorflow.python.framework import graph_util, graph_io
-from local_utils import init_logger
+from utils import init_logger
 from crnn_model import ShadowNet
 
 logger = init_logger()

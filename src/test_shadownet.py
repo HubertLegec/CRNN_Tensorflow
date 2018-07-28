@@ -4,18 +4,16 @@ import matplotlib.pyplot as plt
 import argparse
 import numpy as np
 import math
-
-from local_utils import TextFeatureIO
+from utils import TextFeatureIO
 from crnn_model import crnn_model
 from global_configuration import config
 
 
-def init_args():
+def parse_params():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_dir', type=str, help='Where you store the test tfrecords data')
     parser.add_argument('--weights_path', type=str, help='Where you store the shadow net weights')
     parser.add_argument('--is_recursive', type=bool, help='If need to recursively test the dataset')
-
     return parser.parse_args()
 
 
@@ -153,8 +151,5 @@ def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=False):
 
 
 if __name__ == '__main__':
-    # init args
-    args = init_args()
-
-    # test shadow net
-    test_shadownet(args.dataset_dir, args.weights_path, args.is_recursive)
+    params = parse_params()
+    test_shadownet(params.dataset_dir, params.weights_path, params.is_recursive)

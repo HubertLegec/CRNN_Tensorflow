@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 from os.path import join, dirname, exists
-from local_utils import FeatureIO
+from utils import FeatureIO
 from . import ImageDescription
 
 

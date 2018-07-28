@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_args():
+def parse_params():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--records_file', type=str, help='Where you store the tfrecords file')
     return parser.parse_args()
@@ -12,20 +12,17 @@ def load_args():
 
 def draw_batch(session, images, labels):
     img, lbl = session.run([images, labels])
-
     img = img.astype(np.uint8)
-
     for j in range(6):
         plt.subplot(2, 3, j + 1)
         plt.imshow(img[j, ...])
         plt.title("text {}".format(j))
-
     plt.show()
 
 
 if __name__ == '__main__':
-    args = load_args()
-    data_path = args.records_file
+    params = parse_params()
+    data_path = params.records_file
 
     with tf.Session() as sess:
         feature = {
@@ -53,8 +50,6 @@ if __name__ == '__main__':
         # Reshape image data into the original shape
         image = tf.reshape(image, [32, 100, 3])
 
-        # Any preprocessing here ...
-
         # Creates batches by randomly shuffling tensors
         images, labels = tf.train.shuffle_batch(
             [image, label],
@@ -75,7 +70,7 @@ if __name__ == '__main__':
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(coord=coord)
 
-        #for batch_index in range(5):
+        # for batch_index in range(5):
         draw_batch(sess, images, labels)
 
         # Stop the threads

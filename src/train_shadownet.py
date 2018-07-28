@@ -4,9 +4,8 @@ import os.path as ops
 import time
 import numpy as np
 import argparse
-
 from crnn_model import crnn_model
-from local_utils import TextFeatureIO, init_logger
+from utils import TextFeatureIO, init_logger
 from global_configuration import config
 
 

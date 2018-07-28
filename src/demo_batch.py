@@ -4,8 +4,8 @@ from os.path import isfile, join
 import tensorflow as tf
 import numpy as np
 import cv2
-from local_utils import TextFeatureIO
-from crnn_model import crnn_model
+from utils import TextFeatureIO
+from crnn_model import ShadowNet
 
 
 def init_args():
@@ -40,7 +40,7 @@ def recognize(image_path, weights_path, files_limit=3):
     images_sh = tf.cast(x=inputdata, dtype=tf.float32)
 
     # build shadownet
-    net = crnn_model.ShadowNet(phase='Test', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
+    net = ShadowNet(phase='Test', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
     with tf.variable_scope('shadow'):
         net_out = net.build_shadownet(inputdata=images_sh)
     decoded, _ = tf.nn.ctc_beam_search_decoder(net_out, 25 * np.ones(files_limit), merge_repeated=False)
