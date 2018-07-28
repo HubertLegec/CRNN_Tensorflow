@@ -5,7 +5,7 @@ import os.path as ops
 
 
 def init_logger(level=logging.DEBUG, when="D", backup=7,
-                _format="%(levelname)s: %(asctime)s: %(filename)s:%(lineno)d * %(thread)d %(message)s",
+                _format="%(levelname)s: %(asctime)s: %(filename)s:%(lineno)d * %(message)s",
                 datefmt="%m-%d %H:%M:%S"):
     """
     init_log - initialize log module
@@ -20,8 +20,8 @@ def init_logger(level=logging.DEBUG, when="D", backup=7,
                   default value: 'D'
     :param backup: how many backup file to keep default value: 7
     :param _format: format of the log default format:
-                   %(levelname)s: %(asctime)s: %(filename)s:%(lineno)d * %(thread)d %(message)s
-                   INFO: 12-09 18:02:42: log.py:40 * 139814749787872 HELLO WORLD
+                   %(levelname)s: %(asctime)s: %(filename)s:%(lineno)d * %(message)s
+                   INFO: 12-09 18:02:42: log.py:40 * HELLO WORLD
     :param datefmt:
     :return:
     """
