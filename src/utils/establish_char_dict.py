@@ -8,11 +8,6 @@ Establish the char dictionary in order to contain chinese character
 
 
 class CharDictBuilder(object):
-    """
-        Build and read char dict
-    """
-    def __init__(self):
-        pass
 
     @staticmethod
     def write_char_dict(origin_char_list, save_path: str):
@@ -40,13 +35,11 @@ class CharDictBuilder(object):
 
         with open(save_path, 'w', encoding='utf-8') as json_f:
             json.dump(char_dict, json_f)
-
         return
 
     @staticmethod
     def read_char_dict(dict_path):
         """
-
         :param dict_path:
         :return: a dict with ord(char) as key and char as value
         """
@@ -54,7 +47,6 @@ class CharDictBuilder(object):
 
         with open(dict_path, 'r', encoding='utf-8') as json_f:
             res = json.load(json_f)
-
         return res
 
     @staticmethod
@@ -83,14 +75,11 @@ class CharDictBuilder(object):
 
         with open(save_path, 'w', encoding='utf-8') as json_f:
             json.dump(char_dict, json_f)
-
         return
 
     @staticmethod
     def read_ord_map_dict(ord_map_dict_path):
         assert ops.exists(ord_map_dict_path)
-
         with open(ord_map_dict_path, 'r', encoding='utf-8') as json_f:
             res = json.load(json_f)
-
         return res

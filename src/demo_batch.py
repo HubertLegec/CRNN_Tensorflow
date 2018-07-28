@@ -3,30 +3,22 @@ from os import listdir
 from os.path import isfile, join
 import tensorflow as tf
 import numpy as np
-import cv2
-from utils import TextFeatureIO
+from utils import TextFeatureIO, load_and_resize_image
 from crnn_model import ShadowNet
 
 
-def init_args():
+def parse_params():
     parser = argparse.ArgumentParser()
     parser.add_argument('--image_dir', type=str, help='Where you store images',
                         default='data/test_images')
     parser.add_argument('--weights_path', type=str, help='Where you store the weights',
                         default='model/shadownet/shadownet_2017-09-29-19-16-33.ckpt-39999')
-
     return parser.parse_args()
-
-
-def load_image(path):
-    image = cv2.imread(path, cv2.IMREAD_COLOR)
-    image = cv2.resize(image, (100, 32))
-    return np.expand_dims(image, axis=0).astype(np.float32)
 
 
 def load_images(image_path, files_limit):
     onlyfiles = [join(image_path, f) for f in listdir(image_path) if isfile(join(image_path, f))][:files_limit]
-    return np.array([load_image(p) for p in onlyfiles]), onlyfiles
+    return np.array([load_and_resize_image(p) for p in onlyfiles]), onlyfiles
 
 
 def recognize(image_path, weights_path, files_limit=3):
@@ -61,8 +53,5 @@ def recognize(image_path, weights_path, files_limit=3):
 
 
 if __name__ == '__main__':
-    # Inti args
-    args = init_args()
-
-    # recognize the image
-    recognize(args.image_dir, args.weights_path)
+    params = parse_params()
+    recognize(params.image_dir, params.weights_path)

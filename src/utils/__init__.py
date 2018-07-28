@@ -1,3 +1,4 @@
+from .image_utils import load_and_resize_image
 from .log_utils import init_logger
 from .feature_io import FeatureIO
 from .text_feature_reader import TextFeatureReader

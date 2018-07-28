@@ -1,9 +1,8 @@
 import argparse
-import cv2
 import tensorflow as tf
-import numpy as np
 from os.path import exists
 from tensorflow.python.platform import gfile
+from utils import load_and_resize_image
 
 """
 Script to test predictions on frozen TF graph
@@ -17,18 +16,13 @@ def parse_params():
     return parser.parse_args()
 
 
-def load_image(image_path):
-    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-    image = cv2.resize(image, (100, 32))
-    return np.expand_dims(image, axis=0).astype(np.float32)
-
-
 if __name__ == '__main__':
-    args = parse_params()
-    model_file = args.model  # model/crnn_freeze.pb
+    params = parse_params()
+    model_file = params.model  # model/crnn_freeze.pb
+    image_path = params.image_path
     if not exists(model_file):
-        raise ValueError('{:s} doesn\'t exist'.format(args.image_path))
-    image = load_image(args.image_path)
+        raise ValueError('{:s} doesn\'t exist'.format(image_path))
+    image = load_and_resize_image(image_path)
     tf.reset_default_graph()
     with tf.Session(graph=tf.Graph()) as sess:
         with gfile.FastGFile(model_file, 'rb') as f:
