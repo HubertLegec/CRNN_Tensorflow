@@ -39,7 +39,8 @@ class TfRecordBuilder:
         feat_descr = self.create_feature_example(descr)
         writer.write(feat_descr)
 
-    def create_feature_example(self, img_descr):
+    @classmethod
+    def create_feature_example(cls, img_descr):
         features = tf.train.Features(feature={
             'labels': FeatureIO.int64_feature(img_descr.encoded_label),
             'images': FeatureIO.bytes_feature(img_descr.image_as_bytes()),
@@ -48,7 +49,8 @@ class TfRecordBuilder:
         example = tf.train.Example(features=features)
         return example.SerializeToString()
 
-    def _validate_paths(self, annotations_dir, infos):
+    @classmethod
+    def _validate_paths(cls, annotations_dir, infos):
         print("Check if paths are valid...")
         inv_paths = [p for p in infos[:, 0] if not exists(join(annotations_dir, p))]
         if len(inv_paths) > 0:
