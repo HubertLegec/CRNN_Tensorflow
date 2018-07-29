@@ -16,12 +16,12 @@ def parse_params():
     return parser.parse_args()
 
 
-def load_images(image_path, files_limit):
+def load_images(image_path: str, files_limit: int):
     onlyfiles = [join(image_path, f) for f in listdir(image_path) if isfile(join(image_path, f))][:files_limit]
     return np.array([load_and_resize_image(p) for p in onlyfiles]), onlyfiles
 
 
-def recognize(image_path, weights_path, files_limit=3):
+def recognize(image_path: str, weights_path: str, files_limit=3):
     decoder = TextFeatureIO().reader
     images, filenames = load_images(image_path, files_limit)
     images = np.squeeze(images)

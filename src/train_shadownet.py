@@ -6,21 +6,22 @@ import numpy as np
 import argparse
 from crnn_model import crnn_model
 from utils import TextFeatureIO, init_logger
-from global_configuration import config
+from config import ConfigProvider, GlobalConfig
 
 
 logger = init_logger()
 
 
-def init_args():
+def parse_params():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset_dir', type=str, help='Where you store the dataset')
-    parser.add_argument('--weights_path', type=str, help='Where you store the pretrained weights')
-
+    parser.add_argument('-c', '--config', type=str, metavar='PATH', help='Path to config file')
+    parser.add_argument('-d', '--dataset_dir', type=str, metavar='PATH', help='Where you store the dataset')
+    parser.add_argument('-w', '--weights_path', type=str, metavar='PATH', help='Where you store the pretrained weights')
     return parser.parse_args()
 
 
-def train_shadownet(dataset_dir, weights_path=None):
+def train_shadownet(config: GlobalConfig, dataset_dir: str, weights_path: str = None):
+    training_config = config.get_training_config()
     # decode the tf records to get the training data
     decoder = TextFeatureIO().reader
     images, labels, imagenames = decoder.read_features(ops.join(dataset_dir, 'train_feature.tfrecords'), num_epochs=None)
@@ -43,9 +44,9 @@ def train_shadownet(dataset_dir, weights_path=None):
 
     global_step = tf.Variable(0, name='global_step', trainable=False)
 
-    starter_learning_rate = config.cfg.TRAIN.LEARNING_RATE
+    starter_learning_rate = training_config.get_learning_rate()
     learning_rate = tf.train.exponential_decay(starter_learning_rate, global_step,
-                                               config.cfg.TRAIN.LR_DECAY_STEPS, config.cfg.TRAIN.LR_DECAY_RATE,
+                                               training_config.get_lr_decay_steps(), training_config.get_lr_decay_rate(),
                                                staircase=True)
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 
@@ -72,8 +73,8 @@ def train_shadownet(dataset_dir, weights_path=None):
 
     # Set sess configuration
     sess_config = tf.ConfigProto()
-    sess_config.gpu_options.per_process_gpu_memory_fraction = config.cfg.TRAIN.GPU_MEMORY_FRACTION
-    sess_config.gpu_options.allow_growth = config.cfg.TRAIN.TF_ALLOW_GROWTH
+    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().get_memory_fraction()
+    sess_config.gpu_options.allow_growth = config.get_gpu_config().is_tf_growth_allowed()
 
     sess = tf.Session(config=sess_config)
 
@@ -81,7 +82,8 @@ def train_shadownet(dataset_dir, weights_path=None):
     summary_writer.add_graph(sess.graph)
 
     # Set the training parameters
-    train_epochs = config.cfg.TRAIN.EPOCHS
+    train_epochs = training_config.get_epochs()
+    display_step = training_config.get_display_step()
 
     with sess.as_default():
         if weights_path is None:
@@ -125,7 +127,7 @@ def train_shadownet(dataset_dir, weights_path=None):
                             accuracy.append(0)
             accuracy = np.mean(np.array(accuracy).astype(np.float32), axis=0)
             #
-            if epoch % config.cfg.TRAIN.DISPLAY_STEP == 0:
+            if epoch % display_step == 0:
                 logger.info('Epoch: {:d} cost= {:9f} seq distance= {:9f} train accuracy= {:9f}'.format(
                     epoch + 1, c, seq_distance, accuracy))
 
@@ -137,15 +139,13 @@ def train_shadownet(dataset_dir, weights_path=None):
 
     sess.close()
 
-    return
-
 
 if __name__ == '__main__':
-    # init args
-    args = init_args()
-
-    if not ops.exists(args.dataset_dir):
-        raise ValueError('{:s} doesn\'t exist'.format(args.dataset_dir))
-
-    train_shadownet(args.dataset_dir, args.weights_path)
+    params = parse_params()
+    dataset_dir = params.dataset_dir
+    config_file = params.config
+    config = ConfigProvider.load_config(config_file)
+    if not ops.exists(dataset_dir):
+        raise ValueError("{:s} doesn't exist".format(dataset_dir))
+    train_shadownet(config, dataset_dir, params.weights_path)
     print('Done')

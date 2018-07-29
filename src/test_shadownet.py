@@ -6,18 +6,21 @@ import numpy as np
 import math
 from utils import TextFeatureIO
 from crnn_model import crnn_model
-from global_configuration import config
+from config import ConfigProvider, GlobalConfig
 
 
 def parse_params():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset_dir', type=str, help='Where you store the test tfrecords data')
-    parser.add_argument('--weights_path', type=str, help='Where you store the shadow net weights')
-    parser.add_argument('--is_recursive', type=bool, help='If need to recursively test the dataset')
+    parser.add_argument('-c', '--config', type=str, metavar='PATH', help='Path to config file')
+    parser.add_argument('-d', '--dataset_dir', type=str, help='Where you store the test tfrecords data')
+    parser.add_argument('-w', '--weights_path', type=str, help='Where you store the shadow net weights')
+    parser.add_argument('-r', '--is_recursive', type=bool, help='If need to recursively test the dataset')
     return parser.parse_args()
 
 
-def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=False):
+def test_shadownet(dataset_dir: str, weights_path: str, config: GlobalConfig):
+    is_recursive = config.get_test_config().is_recursive()
+    is_vis = config.get_test_config().show_plot()
     # Initialize the record decoder
     decoder = TextFeatureIO().reader
     images_t, labels_t, imagenames_t = decoder.read_features(ops.join(dataset_dir, 'test_feature.tfrecords'), num_epochs=None)
@@ -45,8 +48,8 @@ def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=False):
 
     # config tf session
     sess_config = tf.ConfigProto()
-    sess_config.gpu_options.per_process_gpu_memory_fraction = config.cfg.TRAIN.GPU_MEMORY_FRACTION
-    sess_config.gpu_options.allow_growth = config.cfg.TRAIN.TF_ALLOW_GROWTH
+    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().get_memory_fraction()
+    sess_config.gpu_options.allow_growth = config.get_gpu_config().is_tf_growth_allowed()
 
     # config tf saver
     saver = tf.train.Saver()
@@ -147,9 +150,10 @@ def test_shadownet(dataset_dir, weights_path, is_vis=False, is_recursive=False):
         coord.join(threads=threads)
 
     sess.close()
-    return
 
 
 if __name__ == '__main__':
     params = parse_params()
-    test_shadownet(params.dataset_dir, params.weights_path, params.is_recursive)
+    config_file = params.config
+    config = ConfigProvider.load_config(config_file)
+    test_shadownet(params.dataset_dir, params.weights_path, config)

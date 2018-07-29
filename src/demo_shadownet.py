@@ -5,20 +5,21 @@ import cv2
 import argparse
 import matplotlib.pyplot as plt
 from crnn_model import ShadowNet
-from global_configuration import config
 from utils import init_logger, TextFeatureIO, load_and_resize_image
+from config import ConfigProvider, GlobalConfig
 
 logger = init_logger()
 
 
 def parse_params():
     parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--config', type=str, metavar='PATH', help='Path to config file')
     parser.add_argument('-i', '--image_path', type=str, help='Path to image file')
     parser.add_argument('-w', '--weights_path', type=str, help='Where you store the weights')
     return parser.parse_args()
 
 
-def recognize(image_path, weights_path, is_vis=True):
+def recognize(image_path: str, weights_path: str, config: GlobalConfig, is_vis=True):
     image = load_and_resize_image(image_path)
 
     inputdata = tf.placeholder(dtype=tf.float32, shape=[1, 32, 100, 3], name='input')
@@ -34,8 +35,8 @@ def recognize(image_path, weights_path, is_vis=True):
 
     # config tf session
     sess_config = tf.ConfigProto()
-    sess_config.gpu_options.per_process_gpu_memory_fraction = config.cfg.TRAIN.GPU_MEMORY_FRACTION
-    sess_config.gpu_options.allow_growth = config.cfg.TRAIN.TF_ALLOW_GROWTH
+    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().get_memory_fraction()
+    sess_config.gpu_options.allow_growth = config.get_gpu_config().is_tf_growth_allowed()
 
     # config tf saver
     saver = tf.train.Saver()
@@ -60,6 +61,8 @@ if __name__ == '__main__':
     params = parse_params()
     image_path = params.image_path
     weights_path = params.weights_path
+    config_file = params.config
+    config = ConfigProvider.load_config(config_file)
     if not ops.exists(image_path):
         raise ValueError("{} doesn't exist".format(image_path))
-    recognize(image_path=image_path, weights_path=weights_path)
+    recognize(image_path, weights_path, config)

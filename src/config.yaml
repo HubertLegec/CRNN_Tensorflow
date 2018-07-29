@@ -1,0 +1,29 @@
+training:
+  # Set the shadownet training epochs
+  epochs: 40000
+  # Set the display step
+  display_step: 1
+  # Set the test display step during training process
+  test_display_step: 100
+  # Set the momentum parameter of the optimizer
+  momentum: 0.9
+  # Set the initial learning rate
+  learning_rate: 0.1
+  # Set the shadownet training batch size
+  batch_size: 32
+  # Set the shadownet validation batch size
+  val_batch_size: 32
+  # Set the learning rate decay steps
+  lr_decay_steps: 10000
+  # Set the learning rate decay rate
+  lr_decay_rate: 0.1
+
+test:
+  is_recursive: True
+  show_plot: False
+
+gpu:
+  # Set the GPU resource used during training process
+  memory_fraction: 0.85
+  # Set the GPU allow growth parameter during tensorflow training process
+  tf_allow_growth: True
