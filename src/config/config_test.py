@@ -33,3 +33,11 @@ class ConfigTest(TestCase):
         assert gpu_config is not None
         assert gpu_config.get_memory_fraction() == 0.85
         assert gpu_config.is_tf_growth_allowed() is True
+
+    def test_logging_config(self):
+        logging_config = self.config.get_logging_config()
+
+        assert logging_config is not None
+        assert logging_config.console_logs_active() is True
+        assert logging_config.get_file_log_level() == 'DEBUG'
+        assert logging_config.get_log_file() == 'crnn.log'

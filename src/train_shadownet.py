@@ -5,11 +5,9 @@ import time
 import numpy as np
 import argparse
 from crnn_model import crnn_model
-from utils import TextFeatureIO, init_logger
+from utils import TextFeatureIO
 from config import ConfigProvider, GlobalConfig
-
-
-logger = init_logger()
+from logger import LogFactory
 
 
 def parse_params():
@@ -21,6 +19,7 @@ def parse_params():
 
 
 def train_shadownet(config: GlobalConfig, dataset_dir: str, weights_path: str = None):
+    logger = LogFactory.get_logger()
     training_config = config.get_training_config()
     # decode the tf records to get the training data
     decoder = TextFeatureIO().reader
@@ -145,6 +144,7 @@ if __name__ == '__main__':
     dataset_dir = params.dataset_dir
     config_file = params.config
     config = ConfigProvider.load_config(config_file)
+    LogFactory.configure(config.get_logging_config())
     if not ops.exists(dataset_dir):
         raise ValueError("{:s} doesn't exist".format(dataset_dir))
     train_shadownet(config, dataset_dir, params.weights_path)

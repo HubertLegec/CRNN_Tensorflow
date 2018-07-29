@@ -5,10 +5,9 @@ import cv2
 import argparse
 import matplotlib.pyplot as plt
 from crnn_model import ShadowNet
-from utils import init_logger, TextFeatureIO, load_and_resize_image
+from utils import TextFeatureIO, load_and_resize_image
 from config import ConfigProvider, GlobalConfig
-
-logger = init_logger()
+from logger import LogFactory
 
 
 def parse_params():
@@ -20,6 +19,7 @@ def parse_params():
 
 
 def recognize(image_path: str, weights_path: str, config: GlobalConfig, is_vis=True):
+    logger = LogFactory.get_logger()
     image = load_and_resize_image(image_path)
 
     inputdata = tf.placeholder(dtype=tf.float32, shape=[1, 32, 100, 3], name='input')
@@ -63,6 +63,7 @@ if __name__ == '__main__':
     weights_path = params.weights_path
     config_file = params.config
     config = ConfigProvider.load_config(config_file)
+    LogFactory.configure(config.get_logging_config())
     if not ops.exists(image_path):
         raise ValueError("{} doesn't exist".format(image_path))
     recognize(image_path, weights_path, config)

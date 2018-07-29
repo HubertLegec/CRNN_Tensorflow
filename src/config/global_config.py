@@ -1,4 +1,4 @@
-from . import TrainingConfig, GpuConfig, TestConfig
+from . import TrainingConfig, GpuConfig, TestConfig, LoggingConfig
 
 
 class GlobalConfig:
@@ -13,3 +13,6 @@ class GlobalConfig:
 
     def get_test_config(self) -> TestConfig:
         return TestConfig(self._config['test'])
+
+    def get_logging_config(self) -> LoggingConfig:
+        return LoggingConfig(self._config['logging'])

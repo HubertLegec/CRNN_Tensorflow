@@ -27,3 +27,10 @@ gpu:
   memory_fraction: 0.85
   # Set the GPU allow growth parameter during tensorflow training process
   tf_allow_growth: True
+
+logging:
+  console_logs: True
+  file_logs: True
+  console_log_level: INFO
+  file_log_level: DEBUG
+  log_file: crnn.log

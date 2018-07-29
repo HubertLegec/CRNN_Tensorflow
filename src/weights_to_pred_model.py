@@ -3,10 +3,7 @@ import tensorflow as tf
 import numpy as np
 from os.path import basename, dirname
 from tensorflow.python.framework import graph_util, graph_io
-from utils import init_logger
 from crnn_model import ShadowNet
-
-logger = init_logger()
 
 # original weights file: 'model/shadownet/shadownet_2017-10-17-11-47-46.ckpt-199999')
 
