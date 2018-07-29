@@ -2,14 +2,11 @@ import tensorflow as tf
 import numpy as np
 from abc import ABCMeta
 
-"""
-The base convolution neural networks mainly implement some useful cnn functions
-"""
-
 
 class CNNBaseModel(metaclass=ABCMeta):
     """
-    Base model for other specific cnn ctpn_models
+    Base model for other specific cnn ctpn_models.
+    The base convolution neural networks mainly implement some useful cnn functions
     """
     def __init__(self):
         pass
@@ -19,20 +16,23 @@ class CNNBaseModel(metaclass=ABCMeta):
                nl=tf.identity, split=1, use_bias=True, data_format='NHWC', name=None):
         """
         Packing the tensorflow conv2d function.
-        :param name: op name
-        :param inputdata: A 4D tensorflow tensor which ust have known number of channels, but can have other
-        unknown dimensions.
-        :param out_channel: number of output channel.
-        :param kernel_size: int so only support square kernel convolution
-        :param padding: 'VALID' or 'SAME'
-        :param stride: int so only support square stride
-        :param w_init: initializer for convolution weights
-        :param b_init: initializer for bias
-        :param nl: a tensorflow identify function
-        :param split: split channels as used in Alexnet mainly group for GPU memory save.
-        :param use_bias:  whether to use bias.
-        :param data_format: default set to NHWC according tensorflow
-        :return: tf.Tensor named ``output``
+
+        Arguments:
+            :param name: op name
+            :param inputdata: A 4D tensorflow tensor which ust have known number of channels, but can have other unknown dimensions.
+            :param out_channel: number of output channel.
+            :param kernel_size: int so only support square kernel convolution
+            :param padding: 'VALID' or 'SAME'
+            :param stride: int so only support square stride
+            :param w_init: initializer for convolution weights
+            :param b_init: initializer for bias
+            :param nl: a tensorflow identify function
+            :param split: split channels as used in Alexnet mainly group for GPU memory save.
+            :param use_bias:  whether to use bias.
+            :param data_format: default set to NHWC according tensorflow
+
+        Returns:
+            :return: tf.Tensor named ``output``
         """
         with tf.variable_scope(name):
             in_shape = inputdata.get_shape().as_list()
@@ -89,7 +89,6 @@ class CNNBaseModel(metaclass=ABCMeta):
     @staticmethod
     def maxpooling(inputdata, kernel_size, stride=None, padding='VALID', data_format='NHWC', name=None):
         padding = padding.upper()
-
         if stride is None:
             stride = kernel_size
 
@@ -111,11 +110,8 @@ class CNNBaseModel(metaclass=ABCMeta):
     def avgpooling(inputdata, kernel_size, stride=None, padding='VALID', data_format='NHWC', name=None):
         if stride is None:
             stride = kernel_size
-
         kernel = [1, kernel_size, kernel_size, 1] if data_format == 'NHWC' else [1, 1, kernel_size, kernel_size]
-
         strides = [1, stride, stride, 1] if data_format == 'NHWC' else [1, 1, stride, stride]
-
         return tf.nn.avg_pool(value=inputdata, ksize=kernel, strides=strides, padding=padding,
                               data_format=data_format, name=name)
 
@@ -123,21 +119,19 @@ class CNNBaseModel(metaclass=ABCMeta):
     def globalavgpooling(inputdata, data_format='NHWC', name=None):
         assert inputdata.shape.ndims == 4
         assert data_format in ['NHWC', 'NCHW']
-
         axis = [1, 2] if data_format == 'NHWC' else [2, 3]
-
         return tf.reduce_mean(input_tensor=inputdata, axis=axis, name=name)
 
     @staticmethod
     def layernorm(inputdata, epsilon=1e-5, use_bias=True, use_scale=True, data_format='NHWC', name=None):
         """
-        :param name:
-        :param inputdata:
-        :param epsilon: epsilon to avoid divide-by-zero.
-        :param use_bias: whether to use the extra affine transformation or not.
-        :param use_scale: whether to use the extra affine transformation or not.
-        :param data_format:
-        :return:
+        Arguments:
+            :param name:
+            :param inputdata:
+            :param epsilon: epsilon to avoid divide-by-zero.
+            :param use_bias: whether to use the extra affine transformation or not.
+            :param use_scale: whether to use the extra affine transformation or not.
+            :param data_format:
         """
         shape = inputdata.get_shape().as_list()
         ndims = len(shape)
@@ -205,14 +199,17 @@ class CNNBaseModel(metaclass=ABCMeta):
         Fully-Connected layer, takes a N>1D tensor and returns a 2D tensor.
         It is an equivalent of `tf.layers.dense` except for naming conventions.
 
-        :param inputdata:  a tensor to be flattened except for the first dimension.
-        :param out_dim: output dimension
-        :param w_init: initializer for w. Defaults to `variance_scaling_initializer`.
-        :param b_init: initializer for b. Defaults to zero
-        :param nl: a nonlinearity function
-        :param use_bias: whether to use bias.
-        :param name:
-        :return: tf.Tensor: a NC tensor named ``output`` with attribute `variables`.
+        Arguments:
+            :param inputdata:  a tensor to be flattened except for the first dimension.
+            :param out_dim: output dimension
+            :param w_init: initializer for w. Defaults to `variance_scaling_initializer`.
+            :param b_init: initializer for b. Defaults to zero
+            :param nl: a nonlinearity function
+            :param use_bias: whether to use bias.
+            :param name:
+
+        Returns:
+            :return: tf.Tensor: a NC tensor named ``output`` with attribute `variables`.
         """
         shape = inputdata.get_shape().as_list()[1:]
         if None not in shape:
