@@ -1,15 +1,13 @@
 import tensorflow as tf
 import numpy as np
-from abc import ABCMeta
+from abc import ABC
 
 
-class CNNBaseModel(metaclass=ABCMeta):
+class CNNBaseModel(ABC):
     """
     Base model for other specific cnn ctpn_models.
     The base convolution neural networks mainly implement some useful cnn functions
     """
-    def __init__(self):
-        pass
 
     @staticmethod
     def conv2d(inputdata, out_channel, kernel_size, padding='SAME', stride=1, w_init=None, b_init=None,

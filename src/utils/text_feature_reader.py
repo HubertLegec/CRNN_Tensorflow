@@ -5,13 +5,13 @@ from . import FeatureIO
 
 class TextFeatureReader(FeatureIO):
     """
-        Implement the crnn feature reader
+        Implement the CRNN feature reader.
     """
     def __init__(self):
         super(TextFeatureReader, self).__init__()
 
     @staticmethod
-    def read_features(tfrecords_path, num_epochs):
+    def read_features(tfrecords_path: str, num_epochs: int):
         assert ops.exists(tfrecords_path)
 
         filename_queue = tf.train.string_input_producer([tfrecords_path], num_epochs=num_epochs)

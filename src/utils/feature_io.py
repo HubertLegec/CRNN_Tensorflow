@@ -2,17 +2,18 @@ import numpy as np
 import tensorflow as tf
 import os
 import os.path as ops
-from utils import establish_char_dict
+from . import CharDictBuilder
 
 
 class FeatureIO:
     """
         Implement the base writer class
     """
-    def __init__(self, char_dict_path=ops.join(os.getcwd(), 'data/char_dict/char_dict.json'),
+    def __init__(self,
+                 char_dict_path=ops.join(os.getcwd(), 'data/char_dict/char_dict.json'),
                  ord_map_dict_path=ops.join(os.getcwd(), 'data/char_dict/ord_map.json')):
-        self.__char_list = establish_char_dict.CharDictBuilder.read_char_dict(char_dict_path)
-        self.__ord_map = establish_char_dict.CharDictBuilder.read_ord_map_dict(ord_map_dict_path)
+        self.__char_list = CharDictBuilder.read_char_dict(char_dict_path)
+        self.__ord_map = CharDictBuilder.read_ord_map_dict(ord_map_dict_path)
 
     @property
     def char_list(self):
@@ -91,9 +92,7 @@ class FeatureIO:
 
     def encode_labels(self, labels):
         """
-            encode the labels for ctc loss
-        :param labels:
-        :return:
+            Encode the labels for ctc loss
         """
         encoded_labeles = []
         lengths = []

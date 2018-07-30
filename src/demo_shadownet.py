@@ -35,7 +35,7 @@ def recognize(image_path: str, weights_path: str, config: GlobalConfig, is_vis=T
 
     # config tf session
     sess_config = tf.ConfigProto()
-    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().get_memory_fraction()
+    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().memory_fraction
     sess_config.gpu_options.allow_growth = config.get_gpu_config().is_tf_growth_allowed()
 
     # config tf saver
@@ -53,8 +53,7 @@ def recognize(image_path: str, weights_path: str, config: GlobalConfig, is_vis=T
             plt.figure('CRNN Model Demo')
             plt.imshow(cv2.imread(image_path, cv2.IMREAD_COLOR)[:, :, (2, 1, 0)])
             plt.show()
-
-        sess.close()
+    sess.close()
 
 
 if __name__ == '__main__':

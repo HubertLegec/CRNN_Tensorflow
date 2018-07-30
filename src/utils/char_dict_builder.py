@@ -7,7 +7,7 @@ Establish the char dictionary in order to contain chinese character
 """
 
 
-class CharDictBuilder(object):
+class CharDictBuilder:
 
     @staticmethod
     def write_char_dict(origin_char_list, save_path: str):
@@ -78,7 +78,7 @@ class CharDictBuilder(object):
         return
 
     @staticmethod
-    def read_ord_map_dict(ord_map_dict_path):
+    def read_ord_map_dict(ord_map_dict_path: str):
         assert ops.exists(ord_map_dict_path)
         with open(ord_map_dict_path, 'r', encoding='utf-8') as json_f:
             res = json.load(json_f)

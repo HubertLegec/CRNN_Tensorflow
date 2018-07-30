@@ -1,21 +1,13 @@
 import numpy as np
 
 
-class Dataset(object):
+class DataSet:
     """
         Implement some global useful functions used in all dataset
     """
-    def __init__(self):
-        pass
 
     @staticmethod
     def shuffle_images_labels(images, labels, imagenames):
-        """
-        :param images:
-        :param labels:
-        :param imagenames:
-        :return:
-        """
         images = np.array(images)
         labels = np.array(labels)
 
@@ -31,7 +23,7 @@ class Dataset(object):
     @staticmethod
     def normalize_images(images, normalization_type):
         """
-        Args:
+        Arguments:
             images: numpy 4D array
             normalization_type: `str`, available choices:
                 - divide_255
@@ -66,5 +58,5 @@ class Dataset(object):
     def num_examples(self):
         raise NotImplementedError
 
-    def next_batch(self, batch_size):
+    def next_batch(self, batch_size: int):
         raise NotImplementedError

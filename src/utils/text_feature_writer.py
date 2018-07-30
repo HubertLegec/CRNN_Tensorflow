@@ -7,7 +7,7 @@ from . import FeatureIO
 
 class TextFeatureWriter(FeatureIO):
     """
-        Implement the crnn feature writer
+        Implement the CRNN feature writer
     """
     def __init__(self):
         super(TextFeatureWriter, self).__init__()
@@ -33,4 +33,3 @@ class TextFeatureWriter(FeatureIO):
                 sys.stdout.flush()
             sys.stdout.write('\n')
             sys.stdout.flush()
-        return

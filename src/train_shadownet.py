@@ -43,9 +43,9 @@ def train_shadownet(config: GlobalConfig, dataset_dir: str, weights_path: str = 
 
     global_step = tf.Variable(0, name='global_step', trainable=False)
 
-    starter_learning_rate = training_config.get_learning_rate()
+    starter_learning_rate = training_config.learning_rate
     learning_rate = tf.train.exponential_decay(starter_learning_rate, global_step,
-                                               training_config.get_lr_decay_steps(), training_config.get_lr_decay_rate(),
+                                               training_config.lr_decay_steps, training_config.lr_decay_rate,
                                                staircase=True)
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 
@@ -72,7 +72,7 @@ def train_shadownet(config: GlobalConfig, dataset_dir: str, weights_path: str = 
 
     # Set sess configuration
     sess_config = tf.ConfigProto()
-    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().get_memory_fraction()
+    sess_config.gpu_options.per_process_gpu_memory_fraction = config.get_gpu_config().memory_fraction
     sess_config.gpu_options.allow_growth = config.get_gpu_config().is_tf_growth_allowed()
 
     sess = tf.Session(config=sess_config)
@@ -81,8 +81,8 @@ def train_shadownet(config: GlobalConfig, dataset_dir: str, weights_path: str = 
     summary_writer.add_graph(sess.graph)
 
     # Set the training parameters
-    train_epochs = training_config.get_epochs()
-    display_step = training_config.get_display_step()
+    train_epochs = training_config.epochs
+    display_step = training_config.display_step
 
     with sess.as_default():
         if weights_path is None:

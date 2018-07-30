@@ -15,23 +15,24 @@ class ConfigTest(TestCase):
         training_config = self.config.get_training_config()
 
         assert training_config is not None
-        assert training_config.get_batch_size() == 32
-        assert training_config.get_epochs() == 40000
-        assert training_config.get_learning_rate() == 0.1
-        assert training_config.get_lr_decay_rate() == 0.1
+        assert training_config.batch_size == 32
+        assert training_config.epochs == 40000
+        assert training_config.learning_rate == 0.1
+        assert training_config.lr_decay_rate == 0.1
 
     def test_test_config(self):
         test_config = self.config.get_test_config()
 
         assert test_config is not None
-        assert test_config.is_recursive() is True
+        assert test_config.is_recursive is True
         assert test_config.show_plot() is False
+        assert test_config.batch_size == 32
 
     def test_gpu_config(self):
         gpu_config = self.config.get_gpu_config()
 
         assert gpu_config is not None
-        assert gpu_config.get_memory_fraction() == 0.85
+        assert gpu_config.memory_fraction == 0.85
         assert gpu_config.is_tf_growth_allowed() is True
 
     def test_logging_config(self):
