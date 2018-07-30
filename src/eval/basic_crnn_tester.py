@@ -32,4 +32,4 @@ class BasicCrnnTester(CrnnTester):
             if self._show_plot:
                 plt.imshow(image[:, :, (2, 1, 0)])
                 plt.show()
-        return np.mean(np.array(accuracy).astype(np.float32), axis=0)
+        return self._calculate_mean_accuracy(accuracy)

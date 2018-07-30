@@ -26,7 +26,7 @@ class RecursiveCrnnTester(CrnnTester):
             batch_accuracy = self._get_batch_accuracy(preds_res, gt_res)
             self._print_result(preds_res, images, gt_res, imagenames)
             accuracy.extend(batch_accuracy)
-        return np.mean(np.array(accuracy).astype(np.float32), axis=0)
+        return self._calculate_mean_accuracy(accuracy)
 
     def _print_result(self, predictions, images, labels, imagenames):
         for index, image in enumerate(images):

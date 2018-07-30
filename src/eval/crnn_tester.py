@@ -72,6 +72,10 @@ class CrnnTester(ABC):
                         accuracy.append(0)
         return accuracy
 
+    @classmethod
+    def _calculate_mean_accuracy(cls, accuracy: list) -> float:
+        return np.mean(np.array(accuracy).astype(np.float32), axis=0)
+
     @abstractmethod
     def load_data(self):
         pass
