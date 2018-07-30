@@ -1,0 +1,22 @@
+sudo: required
+
+language: python
+python:
+  - "3.6"
+
+# safe list of branches
+branches:
+  only:
+  - master
+
+# docker service is required
+services:
+  - docker
+
+# build image from Dockerfile
+before_install:
+  - docker build -t hlegec/crnn:1.0 .
+
+# run tests in container
+script:
+  - docker run --entrypoint "/bin/sh" hlegec/live_crnn:1.0 -c "cd /app; nosetests"
