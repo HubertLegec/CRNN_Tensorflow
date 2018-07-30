@@ -27,6 +27,7 @@ class ConfigTest(TestCase):
         assert test_config.is_recursive is True
         assert test_config.show_plot() is False
         assert test_config.batch_size == 32
+        assert test_config.merge_repeated_chars is True
 
     def test_gpu_config(self):
         gpu_config = self.config.get_gpu_config()

@@ -14,6 +14,7 @@ class CrnnTester(ABC):
         self._tfrecords_path = tfrecords_path
         self._weights_path = weights_path
         self._batch_size = config.get_test_config().batch_size
+        self._merge_repeated = config.get_test_config().merge_repeated_chars
         self._gpu_config = config.get_gpu_config()
         self._decoder = TextFeatureIO().reader
 
@@ -24,7 +25,7 @@ class CrnnTester(ABC):
         net = ShadowNet(phase='Test', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
         with tf.variable_scope('shadow'):
             net_out = net.build_shadownet(inputdata=images_sh)
-        decoded, _ = tf.nn.ctc_beam_search_decoder(net_out, 25 * np.ones(self._batch_size), merge_repeated=False)
+        decoded, _ = tf.nn.ctc_beam_search_decoder(net_out, 25 * np.ones(self._batch_size), merge_repeated=self._merge_repeated)
         sess_config = self.config_tf_session()
 
         # config tf saver

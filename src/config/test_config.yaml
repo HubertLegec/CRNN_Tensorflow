@@ -22,6 +22,7 @@ test:
   is_recursive: True
   show_plot: False
   batch_size: 32
+  merge_repeated_chars: True
 
 gpu:
   # Set the GPU resource used during training process

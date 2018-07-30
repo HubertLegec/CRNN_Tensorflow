@@ -13,3 +13,7 @@ class TestConfig:
     @property
     def batch_size(self) -> int:
         return self._config['batch_size']
+
+    @property
+    def merge_repeated_chars(self) -> bool:
+        return self._config['merge_repeated_chars']
