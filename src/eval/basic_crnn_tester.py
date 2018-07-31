@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from . import CrnnTester
 from config import GlobalConfig
+from utils import calculate_mean_accuracy, get_batch_accuracy
 
 
 class BasicCrnnTester(CrnnTester):
@@ -24,7 +25,7 @@ class BasicCrnnTester(CrnnTester):
         imagenames = [tmp.decode('utf-8') for tmp in imagenames]
         preds_res = self._decoder.sparse_tensor_to_str(predictions[0])
         gt_res = self._decoder.sparse_tensor_to_str(labels)
-        accuracy = self._get_batch_accuracy(preds_res, gt_res)
+        accuracy = get_batch_accuracy(preds_res, gt_res)
         for index, image in enumerate(images):
             self._log.info(
                 'Predict {:s} image with gt label: {:s} **** predict label: {:s}'.format(imagenames[index], gt_res[index], preds_res[index])
@@ -32,4 +33,4 @@ class BasicCrnnTester(CrnnTester):
             if self._show_plot:
                 plt.imshow(image[:, :, (2, 1, 0)])
                 plt.show()
-        return self._calculate_mean_accuracy(accuracy)
+        return calculate_mean_accuracy(accuracy)

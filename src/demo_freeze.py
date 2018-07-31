@@ -18,7 +18,7 @@ def parse_params():
 
 if __name__ == '__main__':
     params = parse_params()
-    model_file = params.model  # model/crnn_freeze.pb
+    model_file = params.model
     image_path = params.image_path
     if not exists(model_file):
         raise ValueError('{:s} doesn\'t exist'.format(image_path))

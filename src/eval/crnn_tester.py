@@ -50,33 +50,6 @@ class CrnnTester(ABC):
         sess_config.gpu_options.allow_growth = self._gpu_config.is_tf_growth_allowed()
         return sess_config
 
-    @classmethod
-    def _get_batch_accuracy(cls, predictions, labels):
-        accuracy = []
-        for index, gt_label in enumerate(labels):
-            pred = predictions[index]
-            totol_count = len(gt_label)
-            correct_count = 0
-            try:
-                for i, tmp in enumerate(gt_label):
-                    if tmp == pred[i]:
-                        correct_count += 1
-            except IndexError:
-                continue
-            finally:
-                try:
-                    accuracy.append(correct_count / totol_count)
-                except ZeroDivisionError:
-                    if len(pred) == 0:
-                        accuracy.append(1)
-                    else:
-                        accuracy.append(0)
-        return accuracy
-
-    @classmethod
-    def _calculate_mean_accuracy(cls, accuracy: list) -> float:
-        return np.mean(np.array(accuracy).astype(np.float32), axis=0)
-
     @abstractmethod
     def load_data(self):
         pass

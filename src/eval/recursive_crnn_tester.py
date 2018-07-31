@@ -1,6 +1,7 @@
 import math
 import tensorflow as tf
 import numpy as np
+from utils import calculate_mean_accuracy, get_batch_accuracy
 from . import CrnnTester
 
 
@@ -23,10 +24,10 @@ class RecursiveCrnnTester(CrnnTester):
             imagenames = self._decode_imagenames(imagenames)
             preds_res = self._decoder.sparse_tensor_to_str(predictions[0])
             gt_res = self._decoder.sparse_tensor_to_str(labels)
-            batch_accuracy = self._get_batch_accuracy(preds_res, gt_res)
+            batch_accuracy = get_batch_accuracy(preds_res, gt_res)
             self._print_result(preds_res, images, gt_res, imagenames)
             accuracy.extend(batch_accuracy)
-        return self._calculate_mean_accuracy(accuracy)
+        return calculate_mean_accuracy(accuracy)
 
     def _print_result(self, predictions, images, labels, imagenames):
         for index, image in enumerate(images):
