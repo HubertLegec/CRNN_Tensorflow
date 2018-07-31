@@ -18,8 +18,8 @@ def test_shadownet(dataset_dir: str, weights_path: str, config: GlobalConfig):
     is_recursive = config.get_test_config().is_recursive
     tfrecords_path = ops.join(dataset_dir, 'test_feature.tfrecords')
     tester = RecursiveCrnnTester(tfrecords_path, weights_path, config) if is_recursive else BasicCrnnTester(tfrecords_path, weights_path, config)
-    accuracy = tester.run()
-    log.info('Mean test accuracy is {:5f}'.format(accuracy))
+    accuracy, avg_time = tester.run()
+    log.info('Mean test accuracy is {:.3f}, mean detection time for batch is {:.3f}s'.format(accuracy, avg_time))
 
 
 if __name__ == '__main__':

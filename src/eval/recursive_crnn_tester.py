@@ -1,6 +1,8 @@
 import math
 import tensorflow as tf
 import numpy as np
+from tqdm import trange
+from time import time
 from utils import calculate_mean_accuracy, get_batch_accuracy
 from . import CrnnTester
 
@@ -19,11 +21,16 @@ class RecursiveCrnnTester(CrnnTester):
     def test(self, decoded, imagenames_sh, images_sh, labels_sh, sess):
         number_of_batches = self._calculate_number_of_batches()
         accuracy = []
-        for batch_idx in range(number_of_batches):
+        batches = trange(number_of_batches)
+        batches.set_description('Processing batches')
+        for batch_idx in batches:
+            start_time = time()
             predictions, images, labels, imagenames = sess.run([decoded, images_sh, labels_sh, imagenames_sh])
             imagenames = self._decode_imagenames(imagenames)
             preds_res = self._decoder.sparse_tensor_to_str(predictions[0])
             gt_res = self._decoder.sparse_tensor_to_str(labels)
+            end_time = time()
+            self._recognition_time.append(end_time - start_time)
             batch_accuracy = get_batch_accuracy(preds_res, gt_res)
             self._print_result(preds_res, images, gt_res, imagenames)
             accuracy.extend(batch_accuracy)
@@ -31,7 +38,7 @@ class RecursiveCrnnTester(CrnnTester):
 
     def _print_result(self, predictions, images, labels, imagenames):
         for index, image in enumerate(images):
-            self._log.info(
+            self._log.debug(
                 'Predict {:s} image with gt label: {:s} **** predict label: {:s}'.format(imagenames[index], labels[index], predictions[index])
             )
 

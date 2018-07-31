@@ -17,8 +17,10 @@ class CrnnTester(ABC):
         self._merge_repeated = config.get_test_config().merge_repeated_chars
         self._gpu_config = config.get_gpu_config()
         self._decoder = TextFeatureIO().reader
+        self._recognition_time = None
 
     def run(self):
+        self._recognition_time = []
         images_sh, labels_sh, imagenames_sh = self.load_data()
         images_sh = tf.cast(x=images_sh, dtype=tf.float32)
 
@@ -42,7 +44,8 @@ class CrnnTester(ABC):
             coord.request_stop()
             coord.join(threads=threads)
         sess.close()
-        return accuracy
+        avg_time = np.mean(self._recognition_time)
+        return accuracy, avg_time
 
     def config_tf_session(self):
         sess_config = tf.ConfigProto()
