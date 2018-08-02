@@ -1,7 +1,7 @@
 from numpy import mean, array, float32
 
 
-def get_batch_accuracy(predictions, labels):
+def get_batch_accuracy(predictions, labels) -> list:
     accuracy = []
     for index, gt_label in enumerate(labels):
         pred = predictions[index]

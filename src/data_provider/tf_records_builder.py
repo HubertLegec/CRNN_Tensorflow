@@ -4,17 +4,18 @@ from tqdm import tqdm
 from os.path import join, dirname, exists
 from utils import FeatureIO
 from logger import LogFactory
-from . import ImageDescription
+from . import ImageDescription, Lexicon
 
 
 class TfRecordBuilder:
-    def __init__(self, annotations_file, output_file, validate_paths=False):
+    def __init__(self, annotations_file, output_file, lexicon: Lexicon, validate_paths=False):
         self._log = LogFactory.get_logger()
         self._annotations_file = annotations_file
         self._output_file = output_file
         self._validate = validate_paths
         self._images = None
         self._encoder = FeatureIO()
+        self._lexicon = lexicon
 
     def process(self):
         if not exists(self._annotations_file):
@@ -36,7 +37,8 @@ class TfRecordBuilder:
                     self._log.warn(f"File {info[0]} skipped")
 
     def process_item(self, writer, annotations_dir, info):
-        descr = ImageDescription(info[0], annotations_dir, info[1])
+        label = self._lexicon.get_word_by_index(int(info[1]))
+        descr = ImageDescription(info[0], annotations_dir, label)
         descr.encode_label(lambda character: self._encoder.char_to_int(character))
         feat_descr = self.create_feature_example(descr)
         writer.write(feat_descr)

@@ -50,17 +50,17 @@ class CrnnTrainer:
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
             for epoch in range(train_epochs):
-                self._train_epoch(sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, labels, merge_summary_op)
+                self._train_epoch(sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, net_out, labels, merge_summary_op)
             coord.request_stop()
             coord.join(threads=threads)
         sess.close()
         self._log.info('Training finished.')
 
-    def _train_epoch(self, sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op):
-        _, c, seq_distance, preds, gt_labels, summary = sess.run(
-            [optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op])
-        preds = self._decoder.sparse_tensor_to_str(preds[0])
-        gt_labels = self._decoder.sparse_tensor_to_str(gt_labels)
+    def _train_epoch(self, sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, net_o, input_labels, merge_summary_op):
+        _, c, seq_distance, preds_r, rrrrrr, gt_labels_r, summary = sess.run(
+            [optimizer, cost, sequence_dist, decoded, net_o, input_labels, merge_summary_op])
+        preds = self._decoder.sparse_tensor_to_str(preds_r[0])
+        gt_labels = self._decoder.sparse_tensor_to_str(gt_labels_r)
         accuracy = get_batch_accuracy(preds, gt_labels)
         mean_accuracy = calculate_mean_accuracy(accuracy)
         self._log_epoch_stats(c, epoch, mean_accuracy, seq_distance)
