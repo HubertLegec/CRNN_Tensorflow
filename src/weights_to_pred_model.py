@@ -35,8 +35,6 @@ def save_model(weights_path: str, output_path: str):
     sess = tf.Session()
 
     with sess.as_default():
-        # write graph structure without weights
-        # tf.train.write_graph(tf.get_default_graph().as_graph_def(), './model', 'crnn.pb', as_text=False)
         saver.restore(sess=sess, save_path=weights_path)
         save_graph(sess, output_path)
 
