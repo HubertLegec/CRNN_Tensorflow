@@ -13,5 +13,3 @@ COPY /src/ /app
 WORKDIR /app
 
 RUN export PYTHONPATH=$PYTHONPATH:/app
-
-ENTRYPOINT python src/test.py --dataset_dir /data/ --weights_path model/shadownet/shadownet_2017-09-29-19-16-33.ckpt-39999
