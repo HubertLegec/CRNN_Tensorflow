@@ -1,5 +1,6 @@
 import argparse
 import tensorflow as tf
+from time import time
 from os.path import exists
 from tensorflow.python.platform import gfile
 from utils import load_and_resize_image
@@ -32,5 +33,8 @@ if __name__ == '__main__':
             tf.import_graph_def(graph_def, name='')
         inputdata = tf.get_default_graph().get_tensor_by_name("input:0")
         output = tf.get_default_graph().get_tensor_by_name("output:0")
+        start_time = time()
         preds = sess.run(output, feed_dict={inputdata: image})
+        end_time = time()
+        print("Recognition time: {}".format(end_time - start_time))
         print(f"Predictions:\n{preds[0]}")
