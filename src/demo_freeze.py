@@ -22,7 +22,7 @@ if __name__ == '__main__':
     model_file = params.model
     image_path = params.image_path
     if not exists(model_file):
-        raise ValueError('{:s} doesn\'t exist'.format(image_path))
+        raise ValueError('{:s} doesn\'t exist'.format(model_file))
     image = load_and_resize_image(image_path)
     tf.reset_default_graph()
     with tf.Session(graph=tf.Graph()) as sess:
