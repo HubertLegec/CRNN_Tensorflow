@@ -5,6 +5,8 @@ from os.path import basename, dirname
 from tensorflow.python.framework import graph_util, graph_io
 from crnn_model import ShadowNet
 
+BATCH_SIZE = 8
+
 
 def parse_params():
     parser = argparse.ArgumentParser()
@@ -22,13 +24,13 @@ def save_graph(sess, output_path):
 
 
 def save_model(weights_path: str, output_path: str):
-    inputdata = tf.placeholder(dtype=tf.float32, shape=[1, 32, 100, 3], name='input')
+    inputdata = tf.placeholder(dtype=tf.float32, shape=[BATCH_SIZE, 32, 100, 3], name='input')
 
     net = ShadowNet(phase='Test', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
 
     with tf.variable_scope('shadow'):
         net_out = net.build_shadownet(inputdata=inputdata)
-    decodes, _ = tf.nn.ctc_beam_search_decoder(inputs=net_out, sequence_length=25 * np.ones(1), merge_repeated=False)
+    decodes, _ = tf.nn.ctc_beam_search_decoder(inputs=net_out, sequence_length=25 * np.ones(BATCH_SIZE), merge_repeated=False)
     dense_decoded = tf.sparse_tensor_to_dense(tf.to_int32(decodes[0]), name='output')
 
     saver = tf.train.Saver()
