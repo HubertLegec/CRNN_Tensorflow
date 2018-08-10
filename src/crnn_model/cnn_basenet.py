@@ -10,8 +10,7 @@ class CNNBaseModel(ABC):
     """
 
     @staticmethod
-    def conv2d(inputdata, out_channel, kernel_size, padding='SAME', stride=1, w_init=None, b_init=None,
-               nl=tf.identity, split=1, use_bias=True, data_format='NHWC', name=None):
+    def conv2d(inputdata, out_channel: int, kernel_size: int, padding='SAME', stride=1, w_init=None, nl=tf.identity, name=None):
         """
         Packing the tensorflow conv2d function.
 
@@ -21,58 +20,78 @@ class CNNBaseModel(ABC):
             :param out_channel: number of output channel.
             :param kernel_size: int so only support square kernel convolution
             :param padding: 'VALID' or 'SAME'
-            :param stride: int so only support square stride
+            :param stride: int so only support square stride #FIXME fix comment
             :param w_init: initializer for convolution weights
-            :param b_init: initializer for bias
             :param nl: a tensorflow identify function
-            :param split: split channels as used in Alexnet mainly group for GPU memory save.
-            :param use_bias:  whether to use bias.
-            :param data_format: default set to NHWC according tensorflow
 
         Returns:
             :return: tf.Tensor named ``output``
         """
         with tf.variable_scope(name):
             in_shape = inputdata.get_shape().as_list()
-            channel_axis = 3 if data_format == 'NHWC' else 1
+            channel_axis = 3
             in_channel = in_shape[channel_axis]
             assert in_channel is not None, "[Conv2D] Input cannot have unknown channel!"
-            assert in_channel % split == 0
-            assert out_channel % split == 0
 
             padding = padding.upper()
 
-            if isinstance(kernel_size, list):
-                filter_shape = [kernel_size[0], kernel_size[1]] + [in_channel / split, out_channel]
-            else:
-                filter_shape = [kernel_size, kernel_size] + [in_channel / split, out_channel]
+            filter_shape = [kernel_size, kernel_size] + [in_channel, out_channel]
 
             if isinstance(stride, list):
-                strides = [1, stride[0], stride[1], 1] if data_format == 'NHWC' else [1, 1, stride[0], stride[1]]
+                strides = [1, stride[0], stride[1], 1]
             else:
-                strides = [1, stride, stride, 1] if data_format == 'NHWC' else [1, 1, stride, stride]
+                strides = [1, stride, stride, 1]
 
             if w_init is None:
                 w_init = tf.contrib.layers.variance_scaling_initializer()
-            if b_init is None:
-                b_init = tf.constant_initializer()
 
             w = tf.get_variable('W', filter_shape, initializer=w_init)
-            b = None
 
-            if use_bias:
-                b = tf.get_variable('b', [out_channel], initializer=b_init)
+            conv = tf.nn.conv2d(inputdata, w, strides, padding)
+            ret = nl(conv, name=name)
+        return ret
 
-            if split == 1:
-                conv = tf.nn.conv2d(inputdata, w, strides, padding, data_format=data_format)
+    @staticmethod
+    def separable_conv2d(inputdata, out_channel: int, kernel_size: int, padding='SAME', stride=1, w_init=None, nl=tf.identity, name=None):
+        """
+        Packing the tensorflow separable_conv2d function.
+
+        Arguments:
+            :param name: op name
+            :param inputdata: A 4D tensorflow tensor which ust have known number of channels, but can have other unknown dimensions.
+            :param out_channel: number of output channel.
+            :param kernel_size: int so only support square kernel convolution
+            :param padding: 'VALID' or 'SAME'
+            :param stride: int so only support square stride
+            :param w_init: initializer for convolution weights
+            :param nl: a tensorflow identify function
+
+        Returns:
+            :return: tf.Tensor named ``output``
+        """
+        with tf.variable_scope(name):
+            in_shape = inputdata.get_shape().as_list()
+            channel_axis = 3
+            in_channel = in_shape[channel_axis]
+            assert in_channel is not None, "[Conv2D] Input cannot have unknown channel!"
+
+            padding = padding.upper()
+
+            filter_shape = [kernel_size, kernel_size] + [in_channel, out_channel]
+
+            if isinstance(stride, list):
+                strides = [1, stride[0], stride[1], 1]
             else:
-                inputs = tf.split(inputdata, split, channel_axis)
-                kernels = tf.split(w, split, 3)
-                outputs = [tf.nn.conv2d(i, k, strides, padding, data_format=data_format)
-                           for i, k in zip(inputs, kernels)]
-                conv = tf.concat(outputs, channel_axis)
+                strides = [1, stride, stride, 1]
 
-            ret = nl(tf.nn.bias_add(conv, b, data_format=data_format) if use_bias else conv, name=name)
+            if w_init is None:
+                w_init = tf.contrib.layers.variance_scaling_initializer()
+
+            w1 = tf.get_variable('W', filter_shape[:2], initializer=w_init)
+            w2 = tf.get_variable('W', filter_shape[:2], initializer=w_init)
+
+            conv = tf.nn.separable_conv2d(inputdata, w1, w2, strides, padding)
+            ret = nl(conv, name=name)
 
         return ret
 
