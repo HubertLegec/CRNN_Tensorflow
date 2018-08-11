@@ -69,6 +69,7 @@ class CNNBaseModel(ABC):
         Returns:
             :return: tf.Tensor named ``output``
         """
+        channel_multiplier = 4
         with tf.variable_scope(name):
             in_shape = inputdata.get_shape().as_list()
             channel_axis = 3
@@ -76,8 +77,6 @@ class CNNBaseModel(ABC):
             assert in_channel is not None, "[Conv2D] Input cannot have unknown channel!"
 
             padding = padding.upper()
-
-            filter_shape = [kernel_size, kernel_size] + [in_channel, out_channel]
 
             if isinstance(stride, list):
                 strides = [1, stride[0], stride[1], 1]
@@ -87,8 +86,8 @@ class CNNBaseModel(ABC):
             if w_init is None:
                 w_init = tf.contrib.layers.variance_scaling_initializer()
 
-            w1 = tf.get_variable('W', filter_shape[:2], initializer=w_init)
-            w2 = tf.get_variable('W', filter_shape[:2], initializer=w_init)
+            w1 = tf.get_variable('W1', [kernel_size, kernel_size, in_channel, channel_multiplier], initializer=w_init)
+            w2 = tf.get_variable('W2', [1, 1, channel_multiplier * in_channel, out_channel], initializer=w_init)
 
             conv = tf.nn.separable_conv2d(inputdata, w1, w2, strides, padding)
             ret = nl(conv, name=name)
