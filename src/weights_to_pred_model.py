@@ -5,7 +5,7 @@ from os.path import basename, dirname
 from tensorflow.python.framework import graph_util, graph_io
 from crnn_model import ShadowNet
 
-BATCH_SIZE = 8
+BATCH_SIZE = 32
 
 
 def parse_params():
