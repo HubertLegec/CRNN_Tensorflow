@@ -52,7 +52,7 @@ class ShadowNet(CNNBaseModel):
         is_training = self.phase.lower() == 'train'
         conv1 = self.__conv_stage(inputdata=inputdata, out_dims=64, name='conv1')  # batch*16*50*64
         conv2 = self.__conv_stage(inputdata=conv1, out_dims=128, name='conv2')  # batch*8*25*128
-        conv3 = self.conv2d(inputdata=conv2, out_channel=256, kernel_size=3, stride=1, name='conv3')  # batch*8*25*256
+        conv3 = self.separable_conv2d(inputdata=conv2, out_channel=256, kernel_size=3, stride=1, name='conv3')  # batch*8*25*256
         relu3 = self.relu(conv3)  # batch*8*25*256
         conv4 = self.separable_conv2d(inputdata=relu3, out_channel=256, kernel_size=3, stride=1, name='conv4')  # batch*8*25*256
         relu4 = self.relu(conv4)  # batch*8*25*256
