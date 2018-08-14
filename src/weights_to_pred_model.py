@@ -5,7 +5,7 @@ from os.path import basename, dirname
 from tensorflow.python.framework import graph_util, graph_io
 from crnn_model import ShadowNet
 
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 
 
 def parse_params():
@@ -31,7 +31,10 @@ def save_model(weights_path: str, output_path: str):
     with tf.variable_scope('shadow'):
         net_out = net.build_shadownet(inputdata=inputdata)
     decodes, _ = tf.nn.ctc_beam_search_decoder(inputs=net_out, sequence_length=25 * np.ones(BATCH_SIZE), merge_repeated=False)
-    dense_decoded = tf.sparse_tensor_to_dense(tf.to_int32(decodes[0]), name='output')
+    sparse_tensor_values = tf.to_int32(decodes[0]).values
+    sparse_tensor_indices = tf.to_int32(decodes[0]).indices
+    flattened_indices = tf.to_int32(tf.reshape(sparse_tensor_indices, [-1]))
+    output = tf.concat([flattened_indices, sparse_tensor_values], 0, name='output')
 
     saver = tf.train.Saver()
     sess = tf.Session()
