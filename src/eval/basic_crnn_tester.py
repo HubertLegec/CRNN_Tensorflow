@@ -17,7 +17,7 @@ class BasicCrnnTester(CrnnTester):
         return tf.train.shuffle_batch(tensors=[images_t, labels_t, imagenames_t],
                                       batch_size=self._batch_size,
                                       capacity=1000 + 32 * 2,
-                                      min_after_dequeue=2,
+                                      min_after_dequeue=100,
                                       num_threads=4)
 
     def test(self, decoded, imagenames_sh, images_sh, labels_sh, sess):

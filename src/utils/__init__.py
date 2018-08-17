@@ -1,4 +1,5 @@
 from .calculate_accuracy import calculate_mean_accuracy, get_batch_accuracy
+from .levenshtein_distance import levenshtein_distance
 from .image_utils import load_and_resize_image
 from .char_dict_builder import CharDictBuilder
 from .feature_io import FeatureIO

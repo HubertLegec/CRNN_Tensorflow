@@ -10,6 +10,24 @@ class CrnnTesterTest(TestCase):
         accuracy = get_batch_accuracy(predictions, labels)
         assert_allclose(accuracy, [1.0, 1.0, 0.714], atol=0.001)
 
+    def test_not_equal_lengths(self):
+        labels = ["home", "loss"]
+        predictions = ["homea", "los"]
+        accuracy = get_batch_accuracy(predictions, labels)
+        assert_allclose(accuracy, [1, 0.75], atol=0.001)
+
+    def test_empty_gt_empty_prediction(self):
+        labels = [""]
+        predictions = [""]
+        accuracy = get_batch_accuracy(predictions, labels)
+        assert_allclose(accuracy, [1], atol=0.001)
+
+    def test_empty_gt_not_empty_prediction(self):
+        labels = [""]
+        predictions = ["pre"]
+        accuracy = get_batch_accuracy(predictions, labels)
+        assert_allclose(accuracy, [0], atol=0.001)
+
     def test_mean_accuracy(self):
         accuracies = [0.2, 0.4, 0.3]
         mean_accuracy = calculate_mean_accuracy(accuracies)

@@ -23,7 +23,7 @@ class RecursiveCrnnTester(CrnnTester):
         accuracy = []
         batches = trange(number_of_batches)
         batches.set_description('Processing batches')
-        for batch_idx in batches:
+        for _ in batches:
             start_time = time()
             predictions, images, labels, imagenames = sess.run([decoded, images_sh, labels_sh, imagenames_sh])
             imagenames = self._decode_imagenames(imagenames)
@@ -44,7 +44,7 @@ class RecursiveCrnnTester(CrnnTester):
 
     def _calculate_number_of_batches(self) -> int:
         test_sample_count = 0
-        for record in tf.python_io.tf_record_iterator(self._tfrecords_path):
+        for _ in tf.python_io.tf_record_iterator(self._tfrecords_path):
             test_sample_count += 1
         self._log.info("Number of records: {}".format(test_sample_count))
         loops_nums = int(math.ceil(test_sample_count / self._batch_size))
