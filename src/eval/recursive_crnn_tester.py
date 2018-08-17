@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 from tqdm import trange
 from time import time
-from utils import calculate_mean_accuracy, get_batch_accuracy
+from utils import calculate_array_mean, get_batch_accuracy, batch_levenshtein_distance
 from . import CrnnTester
 
 
@@ -21,6 +21,7 @@ class RecursiveCrnnTester(CrnnTester):
     def test(self, decoded, imagenames_sh, images_sh, labels_sh, sess):
         number_of_batches = self._calculate_number_of_batches()
         accuracy = []
+        distance = []
         batches = trange(number_of_batches)
         batches.set_description('Processing batches')
         for _ in batches:
@@ -32,9 +33,11 @@ class RecursiveCrnnTester(CrnnTester):
             end_time = time()
             self._recognition_time.append(end_time - start_time)
             batch_accuracy = get_batch_accuracy(preds_res, gt_res)
+            batch_distance = batch_levenshtein_distance(preds_res, gt_res)
             self._print_result(preds_res, images, gt_res, imagenames)
             accuracy.extend(batch_accuracy)
-        return calculate_mean_accuracy(accuracy)
+            distance.extend(batch_distance)
+        return calculate_array_mean(accuracy), calculate_array_mean(distance)
 
     def _print_result(self, predictions, images, labels, imagenames):
         for index, image in enumerate(images):

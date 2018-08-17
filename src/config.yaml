@@ -21,7 +21,7 @@ training:
 test:
   is_recursive: True
   show_plot: False
-  batch_size: 32
+  batch_size: 50
   merge_repeated_chars: False
 
 gpu:

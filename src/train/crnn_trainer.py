@@ -5,7 +5,7 @@ import numpy as np
 import os.path as ops
 from config import GlobalConfig
 from logger import LogFactory
-from utils import TextFeatureIO, calculate_mean_accuracy, get_batch_accuracy
+from utils import TextFeatureIO, calculate_array_mean, get_batch_accuracy
 from crnn_model import ShadowNet
 
 
@@ -62,7 +62,7 @@ class CrnnTrainer:
         preds = self._decoder.sparse_tensor_to_str(preds_r[0])
         gt_labels = self._decoder.sparse_tensor_to_str(gt_labels_r)
         accuracy = get_batch_accuracy(preds, gt_labels)
-        mean_accuracy = calculate_mean_accuracy(accuracy)
+        mean_accuracy = calculate_array_mean(accuracy)
         self._log_epoch_stats(c, epoch, mean_accuracy, seq_distance)
         summary_writer.add_summary(summary=summary, global_step=epoch)
         self._saver.save(sess=sess, save_path=self._model_save_path, global_step=epoch)

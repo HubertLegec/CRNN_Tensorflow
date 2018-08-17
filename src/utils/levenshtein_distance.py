@@ -1,4 +1,13 @@
 
+def batch_levenshtein_distance(predictions, labels) -> list:
+    distances = []
+    for index, gt_label in enumerate(labels):
+        pred = predictions[index]
+        distance = levenshtein_distance(pred, gt_label)
+        distances.append(distance)
+    return distances
+
+
 def levenshtein_distance(s, t, costs=(1, 1, 1)):
     """
         iterative_levenshtein(s, t) -> ldist

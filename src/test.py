@@ -21,8 +21,11 @@ def test_crnn(dataset_dir: str, weights_path: str, config: GlobalConfig):
         tester = RecursiveCrnnTester(tfrecords_path, weights_path, config)
     else:
         tester = BasicCrnnTester(tfrecords_path, weights_path, config)
-    accuracy, avg_time = tester.run()
-    log.info('Mean test accuracy is {:.3f}, mean detection time for batch is {:.3f}s'.format(accuracy, avg_time))
+    accuracy, distance, avg_time = tester.run()
+    log.info(
+        '\n* Mean test accuracy is {:.3f}\n* Mean Levenshtein edit distance is {:.3f}\n* Mean detection time for batch is {:.3f} s'
+        .format(accuracy, distance, avg_time)
+    )
 
 
 if __name__ == '__main__':

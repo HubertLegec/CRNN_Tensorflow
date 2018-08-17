@@ -29,5 +29,5 @@ def get_accuracy(prediction, gt_label) -> float:
         return correct_count / total_count
 
 
-def calculate_mean_accuracy(accuracy: list) -> float:
+def calculate_array_mean(accuracy: list) -> float:
     return mean(array(accuracy).astype(float32), axis=0)

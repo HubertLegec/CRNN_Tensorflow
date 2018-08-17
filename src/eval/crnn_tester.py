@@ -39,12 +39,12 @@ class CrnnTester(ABC):
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
             self._log.info('Start predicting ...')
-            accuracy = self.test(decoded, imagenames_sh, images_sh, labels_sh, sess)
+            accuracy, distance = self.test(decoded, imagenames_sh, images_sh, labels_sh, sess)
             coord.request_stop()
             coord.join(threads=threads)
         sess.close()
         avg_time = np.mean(self._recognition_time)
-        return accuracy, avg_time
+        return accuracy, distance, avg_time
 
     def config_tf_session(self):
         sess_config = tf.ConfigProto()

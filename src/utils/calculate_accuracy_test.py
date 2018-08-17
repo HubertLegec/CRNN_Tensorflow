@@ -1,6 +1,6 @@
 from unittest import TestCase
 from numpy.testing import assert_allclose
-from . import calculate_mean_accuracy, get_batch_accuracy
+from . import calculate_array_mean, get_batch_accuracy
 
 
 class CrnnTesterTest(TestCase):
@@ -30,5 +30,5 @@ class CrnnTesterTest(TestCase):
 
     def test_mean_accuracy(self):
         accuracies = [0.2, 0.4, 0.3]
-        mean_accuracy = calculate_mean_accuracy(accuracies)
+        mean_accuracy = calculate_array_mean(accuracies)
         assert_allclose(mean_accuracy, 0.3, atol=0.01)
