@@ -13,13 +13,19 @@ def parse_params():
     return parser.parse_args()
 
 
-def test_shadownet(dataset_dir: str, weights_path: str, config: GlobalConfig):
+def test_crnn(dataset_dir: str, weights_path: str, config: GlobalConfig):
     log = LogFactory.get_logger()
     is_recursive = config.get_test_config().is_recursive
     tfrecords_path = ops.join(dataset_dir, 'test_feature.tfrecords')
-    tester = RecursiveCrnnTester(tfrecords_path, weights_path, config) if is_recursive else BasicCrnnTester(tfrecords_path, weights_path, config)
-    accuracy, avg_time = tester.run()
-    log.info('Mean test accuracy is {:.3f}, mean detection time for batch is {:.3f}s'.format(accuracy, avg_time))
+    if is_recursive:
+        tester = RecursiveCrnnTester(tfrecords_path, weights_path, config)
+    else:
+        tester = BasicCrnnTester(tfrecords_path, weights_path, config)
+    accuracy, distance, avg_time = tester.run()
+    log.info(
+        '\n* Mean test accuracy is {:.3f}\n* Mean Levenshtein edit distance is {:.3f}\n* Mean detection time for batch is {:.3f} s'
+        .format(accuracy, distance, avg_time)
+    )
 
 
 if __name__ == '__main__':
@@ -27,4 +33,4 @@ if __name__ == '__main__':
     config_file = params.config
     config = ConfigProvider.load_config(config_file)
     LogFactory.configure(config.get_logging_config())
-    test_shadownet(params.dataset_dir, params.weights_path, config)
+    test_crnn(params.dataset_dir, params.weights_path, config)

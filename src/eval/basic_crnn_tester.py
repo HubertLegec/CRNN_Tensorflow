@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from time import time
 from . import CrnnTester
 from config import GlobalConfig
-from utils import calculate_mean_accuracy, get_batch_accuracy
+from utils import calculate_array_mean, get_batch_accuracy, batch_levenshtein_distance
 
 
 class BasicCrnnTester(CrnnTester):
@@ -17,7 +17,7 @@ class BasicCrnnTester(CrnnTester):
         return tf.train.shuffle_batch(tensors=[images_t, labels_t, imagenames_t],
                                       batch_size=self._batch_size,
                                       capacity=1000 + 32 * 2,
-                                      min_after_dequeue=2,
+                                      min_after_dequeue=100,
                                       num_threads=4)
 
     def test(self, decoded, imagenames_sh, images_sh, labels_sh, sess):
@@ -30,6 +30,7 @@ class BasicCrnnTester(CrnnTester):
         end_time = time()
         self._recognition_time.append(end_time - start_time)
         accuracy = get_batch_accuracy(preds_res, gt_res)
+        distance = batch_levenshtein_distance(preds_res, gt_res)
         for index, image in enumerate(images):
             self._log.info(
                 'Predict {:s} image with gt label: {:s} **** predict label: {:s}'.format(imagenames[index], gt_res[index], preds_res[index])
@@ -37,4 +38,4 @@ class BasicCrnnTester(CrnnTester):
             if self._show_plot:
                 plt.imshow(image[:, :, (2, 1, 0)])
                 plt.show()
-        return calculate_mean_accuracy(accuracy)
+        return calculate_array_mean(accuracy), calculate_array_mean(distance)

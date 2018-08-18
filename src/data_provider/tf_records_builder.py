@@ -13,7 +13,6 @@ class TfRecordBuilder:
         self._annotations_file = annotations_file
         self._output_file = output_file
         self._validate = validate_paths
-        self._images = None
         self._encoder = FeatureIO()
         self._lexicon = lexicon
 
