@@ -84,7 +84,7 @@ class CrnnTrainer:
             ops.join(self._dataset_dir, 'train_feature.tfrecords'), num_epochs=None
         )
         inputdata, input_labels, input_imagenames = tf.train.shuffle_batch(
-            tensors=[images, labels, imagenames], batch_size=batch_size, capacity=1000 + 2 * 32, min_after_dequeue=100, num_threads=1)
+            tensors=[images, labels, imagenames], batch_size=batch_size, capacity=1000 + 2 * 32, min_after_dequeue=100, num_threads=4)
         inputdata = tf.cast(x=inputdata, dtype=tf.float32)
         return inputdata, input_labels, input_imagenames
 
