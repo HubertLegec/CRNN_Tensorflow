@@ -19,4 +19,4 @@ before_install:
 
 # run tests in container
 script:
-  - docker run --entrypoint "/bin/sh" hlegec/live_crnn:1.0 -c "cd /app; nosetests"
+  - docker run --entrypoint "/bin/sh" hlegec/crnn:1.0 -c "cd /app; nosetests"
