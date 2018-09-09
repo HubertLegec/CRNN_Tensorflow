@@ -7,11 +7,10 @@ class ShadowNet(CNNBaseModel):
     """
         Implement the CRNN model for sequence recognition.
     """
-    def __init__(self, phase: str, hidden_nums: int, layers_nums: int, seq_length: int, num_classes: int):
+    def __init__(self, phase: str, hidden_nums: int, seq_length: int, num_classes: int):
         super(ShadowNet, self).__init__()
         self.__phase = phase
         self.__hidden_nums = hidden_nums
-        self.__layers_nums = layers_nums
         self.__seq_length = seq_length
         self.__num_classes = num_classes
 

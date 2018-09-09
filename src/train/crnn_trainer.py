@@ -90,7 +90,7 @@ class CrnnTrainer:
 
     def _build_net_model(self, input_data):
         self._log.info('Build net model...')
-        shadownet = ShadowNet(phase='Train', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
+        shadownet = ShadowNet(phase='Train', hidden_nums=256, seq_length=25, num_classes=37)
         with tf.variable_scope('shadow', reuse=False):
             net_out = shadownet.build_shadownet(inputdata=input_data)
         return net_out
