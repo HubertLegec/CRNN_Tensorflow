@@ -6,7 +6,7 @@ import os.path as ops
 from config import GlobalConfig
 from logger import LogFactory
 from utils import TextFeatureIO, calculate_array_mean, get_batch_accuracy
-from crnn_model import ShadowNet
+from crnn_model import CRNN
 
 
 class CrnnTrainer:
@@ -50,15 +50,15 @@ class CrnnTrainer:
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
             for epoch in range(train_epochs):
-                self._train_epoch(sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, net_out, labels, merge_summary_op)
+                self._train_epoch(sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, labels, merge_summary_op)
             coord.request_stop()
             coord.join(threads=threads)
         sess.close()
         self._log.info('Training finished.')
 
-    def _train_epoch(self, sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, net_o, input_labels, merge_summary_op):
-        _, c, seq_distance, preds_r, rrrrrr, gt_labels_r, summary = sess.run(
-            [optimizer, cost, sequence_dist, decoded, net_o, input_labels, merge_summary_op])
+    def _train_epoch(self, sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op):
+        _, c, seq_distance, preds_r, gt_labels_r, summary = sess.run(
+            [optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op])
         preds = self._decoder.sparse_tensor_to_str(preds_r[0])
         gt_labels = self._decoder.sparse_tensor_to_str(gt_labels_r)
         accuracy = get_batch_accuracy(preds, gt_labels)
@@ -90,9 +90,9 @@ class CrnnTrainer:
 
     def _build_net_model(self, input_data):
         self._log.info('Build net model...')
-        shadownet = ShadowNet(phase='Train', hidden_nums=256, seq_length=25, num_classes=37)
+        crnn = CRNN(phase='Train', hidden_nums=256, seq_length=25, num_classes=37)
         with tf.variable_scope('shadow', reuse=False):
-            net_out = shadownet.build_shadownet(inputdata=input_data)
+            net_out = crnn.build(inputdata=input_data)
         return net_out
 
     @classmethod

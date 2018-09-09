@@ -19,6 +19,10 @@ class ConfigProvider:
 
     @classmethod
     def get_config(cls) -> GlobalConfig:
+        """
+        Returns configuration object or throws error if not loaded.
+        :return: Configuration object.
+        """
         if cls.config is None:
             raise ValueError("Config is not loaded")
         return cls.config

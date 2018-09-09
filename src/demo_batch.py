@@ -5,7 +5,7 @@ from time import time
 import tensorflow as tf
 import numpy as np
 from utils import TextFeatureIO, load_and_resize_image
-from crnn_model import ShadowNet
+from crnn_model import CRNN
 
 
 def parse_params():
@@ -35,9 +35,9 @@ def recognize(image_path: str, weights_path: str, files_limit=4):
     images_sh = tf.cast(x=inputdata, dtype=tf.float32)
 
     # build shadownet
-    net = ShadowNet(phase='Test', hidden_nums=256, seq_length=25, num_classes=37)
+    net = CRNN(phase='Test', hidden_nums=256, seq_length=25, num_classes=37)
     with tf.variable_scope('shadow'):
-        net_out = net.build_shadownet(inputdata=images_sh)
+        net_out = net.build(inputdata=images_sh)
     decoded, _ = tf.nn.ctc_beam_search_decoder(net_out, 25 * np.ones(32), merge_repeated=False)
 
     # config tf saver

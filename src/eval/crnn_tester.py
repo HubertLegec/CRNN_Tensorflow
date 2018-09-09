@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from utils import TextFeatureIO
 from logger import LogFactory
 from config import GlobalConfig
-from crnn_model import ShadowNet
+from crnn_model import CRNN
 
 
 class CrnnTester(ABC):
@@ -23,9 +23,9 @@ class CrnnTester(ABC):
         images_sh, labels_sh, imagenames_sh = self.load_data()
         images_sh = tf.cast(x=images_sh, dtype=tf.float32)
 
-        net = ShadowNet(phase='Test', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
+        net = CRNN(phase='Test', hidden_nums=256, seq_length=25, num_classes=37)
         with tf.variable_scope('shadow'):
-            net_out = net.build_shadownet(inputdata=images_sh)
+            net_out = net.build(inputdata=images_sh)
         decoded, _ = tf.nn.ctc_beam_search_decoder(net_out, 25 * np.ones(self._batch_size), merge_repeated=self._merge_repeated)
         sess_config = self.config_tf_session()
 

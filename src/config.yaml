@@ -1,5 +1,5 @@
 training:
-  # Set the shadownet training epochs
+  # Set the CRNN training epochs
   epochs: 40000
   # Set the display step
   display_step: 1
@@ -9,9 +9,9 @@ training:
   momentum: 0.9
   # Set the initial learning rate
   learning_rate: 0.1
-  # Set the shadownet training batch size
+  # Set the CRNN training batch size
   batch_size: 32
-  # Set the shadownet validation batch size
+  # Set the CRNN validation batch size
   val_batch_size: 32
   # Set the learning rate decay steps
   lr_decay_steps: 10000

@@ -3,12 +3,12 @@ from tensorflow.contrib import rnn
 from crnn_model import CNNBaseModel
 
 
-class ShadowNet(CNNBaseModel):
+class CRNN(CNNBaseModel):
     """
         Implement the CRNN model for sequence recognition.
     """
     def __init__(self, phase: str, hidden_nums: int, seq_length: int, num_classes: int):
-        super(ShadowNet, self).__init__()
+        super(CRNN, self).__init__()
         self.__phase = phase
         self.__hidden_nums = hidden_nums
         self.__seq_length = seq_length
@@ -21,18 +21,22 @@ class ShadowNet(CNNBaseModel):
     @phase.setter
     def phase(self, value: str):
         if not isinstance(value, str):
-            raise TypeError('value should be a str \'Test\' or \'Train\'')
+            raise TypeError("value should be a str 'Test' or 'Train'")
         if value.lower() not in ['test', 'train']:
-            raise ValueError('value should be a str \'Test\' or \'Train\'')
+            raise ValueError("value should be a str 'Test' or 'Train'")
         self.__phase = value.lower()
         return
 
-    def __conv_stage(self, inputdata, out_dims, name=None):
+    def __conv_stage(self, inputdata, out_dims: int, name: str=None):
         """
-        Traditional conv stage in VGG format
-        :param inputdata:
-        :param out_dims:
-        :return:
+        Traditional convolutional stage in VGG format.
+
+        Arguments:
+            :param inputdata: Input layer.
+            :param out_dims: Number of convolutional filters.
+            :param name: Layer name.
+        Returns:
+            :return: Layers group.
         """
         conv = self.conv2d(inputdata=inputdata, out_channel=out_dims, kernel_size=3, stride=1, name=name)
         relu = self.relu(inputdata=conv)
@@ -46,7 +50,7 @@ class ShadowNet(CNNBaseModel):
             :param inputdata: eg. batch*32*100*3 NHWC format
 
         Returns:
-            :return:
+            :return: Layers group.
         """
         is_training = self.phase.lower() == 'train'
         conv1 = self.__conv_stage(inputdata=inputdata, out_dims=64, name='conv1')  # batch*16*50*64
@@ -73,10 +77,10 @@ class ShadowNet(CNNBaseModel):
         to sequence used in later stacked LSTM layers.
 
         Arguments:
-            :param inputdata:
+            :param inputdata: Input layer.
 
         Returns:
-            :return:
+            :return: Layers group.
         """
         shape = inputdata.get_shape().as_list()
         assert shape[1] == 1  # H of the feature map must equal to 1
@@ -87,10 +91,10 @@ class ShadowNet(CNNBaseModel):
         Implement the sequence label part of the network
 
         Arguments:
-            :param inputdata:
+            :param inputdata: Input layer.
 
         Returns:
-            :return:
+            :return: Layers group.
         """
         with tf.variable_scope('LSTMLayers'):
             # construct stack LSTM rcnn layer
@@ -114,7 +118,7 @@ class ShadowNet(CNNBaseModel):
             rnn_out = tf.transpose(logits, (1, 0, 2), name='transpose_time_major')  # [width, batch, n_classes]
         return rnn_out, raw_pred
 
-    def build_shadownet(self, inputdata):
+    def build(self, inputdata):
         # first apply the cnn feature extraction stage
         cnn_out = self.__feature_sequence_extraction(inputdata=inputdata)
         # second apply the map to sequence stage

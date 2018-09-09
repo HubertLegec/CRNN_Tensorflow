@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import argparse
 import matplotlib.pyplot as plt
-from crnn_model import ShadowNet
+from crnn_model import CRNN
 from utils import TextFeatureIO, load_and_resize_image
 from config import ConfigProvider, GlobalConfig
 from logger import LogFactory
@@ -24,10 +24,10 @@ def recognize(image_path: str, weights_path: str, config: GlobalConfig, is_vis=T
 
     inputdata = tf.placeholder(dtype=tf.float32, shape=[1, 32, 100, 3], name='input')
 
-    net = ShadowNet(phase='Test', hidden_nums=256, layers_nums=2, seq_length=25, num_classes=37)
+    net = CRNN(phase='Test', hidden_nums=256, seq_length=25, num_classes=37)
 
     with tf.variable_scope('shadow'):
-        net_out = net.build_shadownet(inputdata=inputdata)
+        net_out = net.build(inputdata=inputdata)
 
     decodes, _ = tf.nn.ctc_beam_search_decoder(inputs=net_out, sequence_length=25*np.ones(1), merge_repeated=False)
 
