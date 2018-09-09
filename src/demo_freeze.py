@@ -10,7 +10,7 @@ from utils import load_and_resize_image
 Script to test predictions on frozen TF graph
 """
 
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 
 
 def parse_params():
