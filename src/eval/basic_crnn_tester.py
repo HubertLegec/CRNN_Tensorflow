@@ -13,7 +13,7 @@ class BasicCrnnTester(CrnnTester):
         self._show_plot = config.get_test_config().show_plot()
 
     def load_data(self):
-        images_t, labels_t, imagenames_t = self._decoder.read_features(self._tfrecords_path, num_epochs=None)
+        images_t, labels_t, imagenames_t = self._decoder.read_features(self._tfrecords_path)
         return tf.train.shuffle_batch(tensors=[images_t, labels_t, imagenames_t],
                                       batch_size=self._batch_size,
                                       capacity=1000 + 32 * 2,

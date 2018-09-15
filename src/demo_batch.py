@@ -10,10 +10,8 @@ from crnn_model import CRNN
 
 def parse_params():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--image_dir', type=str, help='Where you store images',
-                        default='data/test_images')
-    parser.add_argument('-w', '--weights_path', type=str, help='Where you store the weights',
-                        default='model/shadownet/shadownet_2017-09-29-19-16-33.ckpt-39999')
+    parser.add_argument('-i', '--image_dir', type=str, help='Where you store images', default='data/test_images')
+    parser.add_argument('-w', '--weights_path', type=str, help='Where you store the weights')
     return parser.parse_args()
 
 

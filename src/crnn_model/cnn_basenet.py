@@ -19,7 +19,7 @@ class CNNBaseModel(ABC):
             :param out_channel: number of output channel.
             :param kernel_size: int so only support square kernel convolution
             :param padding: 'VALID' or 'SAME'
-            :param stride: int so only support square stride #FIXME fix comment
+            :param stride: int so only support square stride
             :param w_init: initializer for convolution weights
             :param nl: a tensorflow identify function
 

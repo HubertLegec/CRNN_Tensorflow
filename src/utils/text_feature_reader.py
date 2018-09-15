@@ -11,7 +11,7 @@ class TextFeatureReader(FeatureIO):
         super(TextFeatureReader, self).__init__()
 
     @staticmethod
-    def read_features(tfrecords_path: str, num_epochs: int):
+    def read_features(tfrecords_path: str, num_epochs: int = None):
         assert ops.exists(tfrecords_path)
 
         filename_queue = tf.train.string_input_producer([tfrecords_path], num_epochs=num_epochs)

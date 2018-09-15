@@ -23,7 +23,7 @@ class CrnnTrainer:
 
     def train(self):
         training_config = self._config.get_training_config()
-        images, labels, imagenames = self._build_data_feed(training_config.batch_size)
+        images, labels = self._build_data_feed(training_config.batch_size)
         net_out = self._build_net_model(images)
         cost = tf.reduce_mean(tf.nn.ctc_loss(labels=labels, inputs=net_out, sequence_length=25 * np.ones(training_config.batch_size)))
         decoded, _ = tf.nn.ctc_beam_search_decoder(net_out, 25 * np.ones(training_config.batch_size), merge_repeated=False)
@@ -57,8 +57,7 @@ class CrnnTrainer:
         self._log.info('Training finished.')
 
     def _train_epoch(self, sess, summary_writer, epoch, optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op):
-        _, c, seq_distance, preds_r, gt_labels_r, summary = sess.run(
-            [optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op])
+        _, c, seq_distance, preds_r, gt_labels_r, summary = sess.run([optimizer, cost, sequence_dist, decoded, input_labels, merge_summary_op])
         preds = self._decoder.sparse_tensor_to_str(preds_r[0])
         gt_labels = self._decoder.sparse_tensor_to_str(gt_labels_r)
         accuracy = get_batch_accuracy(preds, gt_labels)
@@ -80,13 +79,11 @@ class CrnnTrainer:
 
     def _build_data_feed(self, batch_size):
         self._log.info('Build data feed...')
-        images, labels, imagenames = self._decoder.read_features(
-            ops.join(self._dataset_dir, 'train_feature.tfrecords'), num_epochs=None
-        )
-        inputdata, input_labels, input_imagenames = tf.train.shuffle_batch(
-            tensors=[images, labels, imagenames], batch_size=batch_size, capacity=1000 + 2 * 32, min_after_dequeue=100, num_threads=4)
+        images, labels, _ = self._decoder.read_features(ops.join(self._dataset_dir, 'train_feature.tfrecords'))
+        inputdata, input_labels = tf.train.shuffle_batch(
+            tensors=[images, labels], batch_size=batch_size, capacity=1000 + 2 * 32, min_after_dequeue=100, num_threads=4)
         inputdata = tf.cast(x=inputdata, dtype=tf.float32)
-        return inputdata, input_labels, input_imagenames
+        return inputdata, input_labels
 
     def _build_net_model(self, input_data):
         self._log.info('Build net model...')

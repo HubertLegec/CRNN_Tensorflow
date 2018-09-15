@@ -12,7 +12,7 @@ class RecursiveCrnnTester(CrnnTester):
         """
         :return: (tuple) images, labels, imagenames
         """
-        images_t, labels_t, imagenames_t = self._decoder.read_features(self._tfrecords_path, num_epochs=None)
+        images_t, labels_t, imagenames_t = self._decoder.read_features(self._tfrecords_path)
         return tf.train.batch(tensors=[images_t, labels_t, imagenames_t],
                               batch_size=self._batch_size,
                               capacity=1000 + 32 * 2,

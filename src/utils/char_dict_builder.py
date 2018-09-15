@@ -12,7 +12,6 @@ class CharDictBuilder:
     @staticmethod
     def write_char_dict(origin_char_list, save_path: str):
         """
-
         :param origin_char_list: Origin char you want to contain a character a line
         :param save_path:
         :return:
@@ -52,7 +51,7 @@ class CharDictBuilder:
     @staticmethod
     def map_ord_to_index(origin_char_list, save_path):
         """
-            Map ord of character in origin char list into index start from 0 in order to meet the output of the DNN
+        Map ord of character in origin char list into index start from 0 in order to meet the output of the DNN
         :param origin_char_list:
         :param save_path:
         :return:
